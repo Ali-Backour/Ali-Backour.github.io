@@ -1,27 +1,283 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ali Backour</title>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="style.css">
+  <style>
+    :root {
+      --bg: #fafafa;
+      --text: #222;
+      --muted: #666;
+      --link: #1f5fbf;
+      --card: #ffffff;
+      --border: #e5e5e5;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    header {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+      margin-bottom: 48px;
+    }
+
+    .profile-photo {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #ddd;
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    h1 {
+      font-size: 2.4rem;
+      margin: 0 0 8px;
+      line-height: 1.15;
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .links a {
+      margin-right: 14px;
+      color: var(--link);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .links a:hover {
+      text-decoration: underline;
+    }
+
+    section {
+      margin-bottom: 42px;
+    }
+
+    h2 {
+      font-size: 1.35rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 6px;
+      margin-bottom: 18px;
+    }
+
+    .item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px 20px;
+      margin-bottom: 14px;
+    }
+
+    .item h3 {
+      margin: 0 0 6px;
+      font-size: 1.05rem;
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-bottom: 8px;
+    }
+
+    ul {
+      padding-left: 22px;
+    }
+
+    footer {
+      margin-top: 56px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 650px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .profile-photo {
+        width: 120px;
+        height: 120px;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
 </head>
 <body>
-  <h1>Ali Backour</h1>
-  <p>MIT '26 · Math + Computer Science</p>
-  
-  <h2>About Me</h2>
-  <p>I’m a student at MIT primarly interested in Machine Learning. I am also interested in cryptography, Algorithms and systems.
-     Currently interning at Genesis Therapeutics.</p>
-  
-  <h2>Projects</h2>
-  <ul>
-    <li><b>ROI-FHE for CNNs:</b> <a href="link-to-paper-or-github">paper link</a></li>
-    <li><b>MCMC Cipher Cracker:</b> Bayesian decryption of substitution ciphers</li>
-  </ul>
+  <main class="container">
+    <header>
+      <!-- Replace profile.jpg with your own image file, or remove this img tag. -->
+      <img src="profile.jpg" alt="Profile photo" class="profile-photo" />
+      <div>
+        <h1>Ali Backour</h1>
+        <div class="subtitle">
+          Math and Computer Science student at MIT · Machine Learning Researcher
+        </div>
+        <p>
+          I am interested in machine learning, generative models, geometry, information theory,
+          and the mathematical structure underlying modern AI systems.
+        </p>
+        <div class="links">
+          <a href="mailto:abackour@mit.edu">Email</a>
+          <a href="https://github.com/Ali-Backour">GitHub</a>
+          <a href="https://scholar.google.com/citations?user=QkDfp_foEjUC&hl=en">Google Scholar</a>
+          <a href="resume.pdf">Resume</a>
+        </div>
+      </div>
+    </header>
 
-  <h2>Contact</h2>
-  <p>Email: abackour@mit.edu<br>
-  </p>
+    <section id="about">
+      <h2>About</h2>
+      <p>
+        I am a student at MIT studying mathematics and computer science. I am broadly
+        interested in understanding intelligence through mathematical, computational,
+        and philosophical lenses. My research interests include generative models,
+        representation learning, geometry for machine learning, information theory,
+        and the behavior and limitations of large language models.
+      </p>
+      <p>
+        I am especially drawn to questions where empirical behavior in modern ML systems
+        points toward a deeper mathematical structure: Why does guidance improve diffusion
+        models? What does the geometry of an image or representation space mean? How should
+        we evaluate whether language models are genuinely reasoning, exploring, or merely
+        following familiar patterns? I like projects that begin with a concrete anomaly or
+        surprising experiment and develop into a more principled explanation.
+      </p>
+      <p>
+        Outside of research, I enjoy running, biking and playing ice hockey.
+      </p>
+    </section>
+
+    <section id="research">
+      <h2>Research Interests</h2>
+      <ul>
+        <li>Generative models and diffusion models</li>
+        <li>Geometry of data manifolds and representation spaces</li>
+        <li>Information theory for machine learning</li>
+        <li>Understanding and evaluating large language models</li>
+        <li>Cryptography, privacy, and ML security</li>
+      </ul>
+    </section>
+
+    <section id="projects">
+      <h2>Selected Reseach Projects</h2>
+
+      <div class="item">
+        <h3>A Geometric View of Why Guidance Improves Diffusion Samples</h3>
+        <div class="meta">Research project · Generative modeling, geometry, diffusion models</div>
+        <p>
+          Investigating whether unguided diffusion models systematically underrepresent regions
+          of the data distribution that are geometrically difficult to model, and whether guidance
+          compensates for this bias. The project combines toy manifold experiments with real-image
+          representation-space curvature proxies.
+        </p>
+        <p>
+            <span>Paper coming soon</span>
+        </p>
+      </div>
+
+ <div class="item">
+    <h3>Implicit Augmentation from Distributional Symmetry in Turbulence Super-Resolution</h3>
+    <div class="meta"> NeurIPS Workshop paper · ML for physics, turbulence, equivariance, super-resolution</div>
+    <p>
+      Studied whether convolutional neural networks can acquire rotational equivariance
+      implicitly from turbulence data, without explicit rotation augmentation or
+      specialized equivariant architectures. We found that statistical isotropy in
+      turbulent flows acts as a natural source of augmentation: models trained on more
+      isotropic mid-plane data exhibit lower equivariance error than those trained near
+      anisotropic boundary layers, and increasing temporal or spatial sampling further
+      improves equivariance.
+    </p>
+    <p>
+      <a href="https://arxiv.org/abs/2509.20683">arXiv</a>
+    </p>
+  </div>
+
+
+     <div class="item">
+    <h3>Mixing Is Not Meaning: Evaluating Soft-Token Reasoning in LLMs</h3>
+    <div class="meta">Research project · Language models, representation learning, continuous reasoning</div>
+    <p>
+      Studied whether language models can meaningfully interpret soft tokens formed as
+      mixtures of token embeddings. We found that pretrained models often collapse these
+      mixtures to their dominant discrete component, suggesting that naive embedding
+      interpolation does not preserve distributional meaning. We introduced diagnostic
+      probes for soft-token understanding and explored LoRA fine-tuning objectives that
+      encourage models to better preserve mixture semantics.
+      </p>
+    </div>
+   
+    <div class="item">
+      <h3>Encrypt What Matters: ROI-Guided FHE for CNN Inference</h3>
+      <div class="meta">Research project · FHE, privacy-preserving ML, efficient encrypted inference</div>
+      <p>
+        Developed a region-of-interest encryption scheme for CNN inference under fully
+        homomorphic encryption. Instead of encrypting the full input, the method encrypts
+        only privacy-sensitive regions and partially evaluates the remaining plaintext
+        computation. By formalizing propagation of sensitivity through convolutional
+        layers, we showed that CNN locality can substantially reduce encrypted circuit size
+        and inference cost.
+      </p>
+      <p>
+        <a href="cryptography_paper.pdf">Course project PDF</a>
+      </p>
+    </div>
+    </section>
+
+    <section id="publications">
+      <h2>Writing</h2>
+      <div class="item">
+        <h3>Coming soon</h3>
+        <p>
+          I am currently preparing blog posts on geometry for ML, information theory for ML,
+          and the role of divergences as learning objectives.
+        </p>
+        <p>
+        I will be a teaching assistant for Reinforcement Learning (6.7920), and I am
+        writing course notes to make the material more structured and accessible.
+      </p>
+      </div>
+    </section>
+
+    <section id="contact">
+      <h2>Contact</h2>
+      <p>
+        The best way to reach me is by email at
+        <a href="mailto:abackour@mit.edu">abackour@mit.edu</a>.
+      </p>
+    </section>
+
+    <footer>
+      Last updated: May 2026.
+    </footer>
+  </main>
 </body>
 </html>
