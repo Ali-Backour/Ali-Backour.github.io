@@ -188,38 +188,40 @@
     </section>
 
     <section id="projects">
-      <h2>Selected Reseach Projects</h2>
+      <h2>Selected Research Projects</h2>
 
       <div class="item">
         <h3>A Geometric View of Why Guidance Improves Diffusion Samples</h3>
         <div class="meta">Research project · Generative modeling, geometry, diffusion models</div>
         <p>
-          Investigating whether unguided diffusion models systematically underrepresent regions
-          of the data distribution that are geometrically difficult to model, and whether guidance
-          compensates for this bias. The project combines toy manifold experiments with real-image
-          representation-space curvature proxies.
+          Developing a geometric explanation for why classifier-free guidance improves diffusion
+          samples. The central idea is that unguided diffusion may favor smoother, easier-to-model
+          regions of the data distribution, while underrepresenting high-curvature or boundary-like
+          regions where the score field varies more rapidly. I study this effect on controlled
+          manifolds such as the catenoid and test whether guided image samples move toward
+          higher-curvature regions in stable and DINO representation spaces.
         </p>
         <p>
             <span>Paper coming soon</span>
         </p>
       </div>
 
- <div class="item">
-    <h3>Implicit Augmentation from Distributional Symmetry in Turbulence Super-Resolution</h3>
-    <div class="meta"> NeurIPS Workshop paper · ML for physics, turbulence, equivariance, super-resolution</div>
-    <p>
-      Studied whether convolutional neural networks can acquire rotational equivariance
-      implicitly from turbulence data, without explicit rotation augmentation or
-      specialized equivariant architectures. We found that statistical isotropy in
-      turbulent flows acts as a natural source of augmentation: models trained on more
-      isotropic mid-plane data exhibit lower equivariance error than those trained near
-      anisotropic boundary layers, and increasing temporal or spatial sampling further
-      improves equivariance.
-    </p>
-    <p>
-      <a href="https://arxiv.org/abs/2509.20683">arXiv</a>
-    </p>
-  </div>
+      <div class="item">
+          <h3>Implicit Augmentation from Distributional Symmetry in Turbulence Super-Resolution</h3>
+          <div class="meta"> NeurIPS Workshop paper · ML for physics, turbulence, equivariance, super-resolution</div>
+          <p>
+            Studied whether convolutional neural networks can acquire rotational equivariance
+            implicitly from turbulence data, without explicit rotation augmentation or
+            specialized equivariant architectures. We found that statistical isotropy in
+            turbulent flows acts as a natural source of augmentation: models trained on more
+            isotropic mid-plane data exhibit lower equivariance error than those trained near
+            anisotropic boundary layers, and increasing temporal or spatial sampling further
+            improves equivariance.
+          </p>
+          <p>
+            <a href="https://arxiv.org/abs/2509.20683">arXiv</a>
+          </p>
+        </div>
 
 
      <div class="item">
