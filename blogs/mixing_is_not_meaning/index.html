@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mixing Is Not Meaning: Do LLMs Understand Soft Tokens?</title>
+  <meta property="og:title" content="Mixing Is Not Meaning: Do LLMs Understand Soft Tokens?" />
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  <style type="text/css">
+    body {
+      background-color: #f5f9ff;
+      margin: 0;
+      color: #1f2933;
+      line-height: 1.55;
+    }
+    .content-margin-container {
+      display: flex;
+      width: 100%;
+      justify-content: left;
+      align-items: flex-start;
+    }
+    .main-content-block {
+      width: 70%;
+      max-width: 1100px;
+      background-color: #fff;
+      border-left: 1px solid #DDD;
+      border-right: 1px solid #DDD;
+      padding: 18px 24px 18px 24px;
+      font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      box-sizing: border-box;
+    }
+    .margin-left-block {
+      font-size: 14px;
+      width: 15%;
+      max-width: 150px;
+      position: relative;
+      margin-left: 10px;
+      text-align: left;
+      font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      padding: 5px;
+      box-sizing: border-box;
+    }
+    .margin-right-block {
+      font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      width: 25%;
+      max-width: 285px;
+      position: relative;
+      text-align: left;
+      padding: 14px;
+      color: #52616b;
+      box-sizing: border-box;
+    }
+    img { max-width: 100%; height: auto; display: block; margin: auto; }
+    a:link, a:visited { color: #0e7862; text-decoration: none; }
+    a:hover { color: #24b597; }
+    h1 {
+      font-size: 22px;
+      margin-top: 10px;
+      margin-bottom: 8px;
+      font-family: "Courier New", Courier, monospace;
+      color: #0f172a;
+    }
+    h2 { font-size: 17px; margin-top: 14px; margin-bottom: 4px; color: #0f172a; }
+    p { margin: 0.55em 0; }
+    ul { margin-top: 0.4em; }
+    table.header { font-weight: 300; font-size: 17px; width: 100%; }
+    table td, table td * { vertical-align: middle; position: relative; }
+    hr { height: 1px; border: none; background-color: #DDD; margin: 20px 0; }
+    div.hypothesis {
+      width: 84%;
+      background-color: #f1f5f9;
+      border: 1px solid #94a3b8;
+      border-radius: 10px;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 18px;
+      text-align: center;
+      margin: 18px auto;
+      padding: 16px;
+    }
+    .equation {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 14px 12px;
+      margin: 12px auto;
+      text-align: center;
+      overflow-x: auto;
+      color: #0f172a;
+      font-size: 20px;
+    }
+    .image-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; align-items: start; }
+    .image-row.two { grid-template-columns: repeat(2, 1fr); }
+    .panel-label { text-align: center; font-size: 13px; color: #52616b; margin-top: 4px; }
+    .figure-caption { color: #334155; font-size: 14px; margin-top: 10px; }
+    .citation { font-size: 0.9em; background-color: #fff; padding: 10px 0; height: auto; }
+    .toc { position: fixed; max-width: inherit; top: max(20%, 120px); }
+    .toc a { font-size: 13px; }
+    .takeaway { border-left: 4px solid #0e7862; background: #f8fafc; padding: 10px 14px; margin: 14px 0; color: #334155; }
+    code { background: #f1f5f9; padding: 1px 4px; border-radius: 4px; }
+    @media (max-width: 900px) {
+      .content-margin-container { display: block; }
+      .main-content-block { width: 100%; border-left: none; border-right: none; }
+      .margin-left-block, .margin-right-block { display: none; }
+      .image-row, .image-row.two { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="content-margin-container">
+    <div class="margin-left-block"></div>
+    <div class="main-content-block">
+      <table class="header" align="left">
+        <tr>
+          <td colspan="4">
+            <span style="font-size: 32px; font-family: 'Courier New', Courier, monospace;">Mixing Is Not Meaning: Do LLMs Understand Soft Tokens?</span>
+          </td>
+        </tr>
+        <tr>
+          <td align="left"><span style="font-size:17px"><a href="https://ali-backour.github.io/">Ali Backour</a></span></td>
+          <tr>
+            <td align="left">
+              <span style="font-size:14px; color:#52616b;">December 2025 · Exploratory research note</span>
+            </td>
+          </tr>
+        </tr>
+      </table>
+    </div>
+    <div class="margin-right-block"></div>
+  </div>
+
+  <div class="content-margin-container" id="intro">
+    <div class="margin-left-block">
+      <div class="toc">
+        <b style="font-size:16px">Outline</b><br><br>
+        <a href="#intro">The motivation</a><br><br>
+        <a href="#related">Related work</a><br><br>
+        <a href="#softtokens">Soft tokens</a><br><br>
+        <a href="#repeat">Repeat-token probe</a><br><br>
+        <a href="#sentiment">Sentiment probe</a><br><br>
+        <a href="#why">Why collapse happens</a><br><br>
+        <a href="#training">Training attempt</a><br><br>
+        <a href="#mixturebench">MixtureBench</a><br><br>
+        <a href="#limits">Limitations</a><br><br>
+      </div>
+    </div>
+    <div class="main-content-block">
+      <h1>The motivation</h1>
+      <p>Large language models reason, communicate, and plan through discrete natural-language tokens. This is powerful, but it is also a strange constraint: the model has to compress every intermediate step into one token at a time. Human reasoning does not always feel like a sequence of fully verbalized words; it can involve uncertainty, partial concepts, and non-linguistic structure.</p>
+      <p>This motivates a family of recent methods that try to move chain-of-thought into a more continuous space. Instead of forcing the model to commit to exactly one next token at each step, these methods let the model pass forward a hidden state, a “concept” vector, or a mixture over several possible tokens <a href="#ref_1">[1]</a><a href="#ref_2">[2]</a>.</p>
+      <div class="hypothesis">Question: if we mix token embeddings, does the model understand the mixture, or does it collapse it back to one token?</div>
+      <p>The question matters because many soft-token ideas implicitly assume that a convex combination of embeddings preserves a convex combination of meanings. If the model assigns 60% probability to one token and 40% to another, then a soft token seems like a natural way to carry both possibilities forward. But that only works if the transformer actually interprets the intermediate vector as a meaningful distributional object.</p>
+      <p>This post is a lowkey research note about that assumption. The main result is negative but useful: in controlled probes, pretrained models often collapse soft-token mixtures onto their most probable discrete component. We also tried a soft next-token fine-tuning objective on Qwen-style models. It helped optimize the synthetic training objective, but it did not clearly solve the underlying collapse problem.</p>
+      <div class="takeaway"><b>Short version:</b> soft-token reasoning is an appealing idea, but before using soft tokens as reasoning states, we should check whether the model understands them at all.</div>
+    </div>
+    <div class="margin-right-block">
+      This version is intentionally framed as an exploratory blog post rather than a finished paper. The reliable contribution is the diagnostic failure mode, not a downstream benchmark win.
+    </div>
+  </div>
+
+  <div class="content-margin-container" id="related">
+    <div class="margin-left-block"></div>
+    <div class="main-content-block">
+      <h1>What is already known?</h1>
+      <p><b>Continuous latent reasoning.</b> Coconut feeds hidden activations back into a language model as latent reasoning steps, showing that transformers can in principle sustain a continuous trajectory <a href="#ref_1">[1]</a>. But these states still come from a model trained primarily on discrete text, so multi-step latent rollouts can drift or become unstable. This raises a basic training-inference mismatch: the model is being asked to operate on continuous states that it was not originally trained to treat as inputs.</p>
+      <p><b>Soft Thinking.</b> Soft Thinking constructs continuous “concept” tokens using weighted averages of token embeddings <a href="#ref_2">[2]</a>. This is exactly the assumption we probe here. The construction is convenient, but it treats the embedding space as if it were semantically linear: if a point lies between token embeddings, the model should interpret it as something between their meanings. Our experiments suggest that this is often not what happens.</p>
+      <p><b>The greedy pitfall.</b> A closely related paper argues that LLMs tend to behave as single-threaded reasoners even when given soft or continuous mixtures, a failure they call the “Greedy Pitfall” <a href="#ref_3">[3]</a>. Our probes are aligned with that picture: supplying a continuous embedding derived from a probability distribution does not guarantee that the model carries multiple reasoning paths forward.</p>
+      <p><b>Mixup as motivation.</b> MixUp trains models on convex combinations of inputs and labels, encouraging smoother behavior between examples <a href="#ref_4">[4]</a>. This inspires a natural question in NLP: can we train a language model so that convex combinations in token-embedding space are interpreted as convex combinations of next-token distributions?</p>
+      <div class="takeaway"><b>Where this post fits:</b> rather than proposing a new continuous-reasoning method, we ask a simpler diagnostic question: when a model receives a soft token, does it preserve the mixture semantics, or does it snap back to a discrete token?</div>
+    </div>
+    <div class="margin-right-block">
+      I kept the related work close to the paper's motivation, but removed the stronger “we improve downstream reasoning” framing.
+    </div>
+  </div>
+
+  <div class="content-margin-container" id="softtokens">
+    <div class="margin-left-block"></div>
+    <div class="main-content-block">
+      <h1>What is a soft token?</h1>
+      <p>Let \(V\) be the vocabulary and let \(e_i \in \mathbb{R}^d\) be the embedding of token \(i\). A probability distribution over tokens is a vector \(p \in \Delta^{|V|}\), where \(p_i \ge 0\) and \(\sum_i p_i = 1\). The simplest soft-token construction maps \(p\) to a weighted average of embeddings:</p>
+      <div class="equation">\[
+        f_V(p) = \sum_{i=1}^{|V|} p_i e_i .
+      \]</div>
+      <p>This is the basic construction used in many soft-token discussions: instead of sampling or choosing the most likely token, form a continuous vector that keeps the whole distribution. If this worked perfectly, the model's next-token distribution after receiving \(f_V(p)\) would preserve the information in \(p\).</p>
+      <p>To measure this, we compare a target distribution \(p\) with the model-produced distribution \(q\) using KL divergence:</p>
+      <div class="equation">\[
+        D_{\mathrm{KL}}(p \Vert q) = \sum_{i \in V} p_i \log \frac{p_i}{q_i} .
+      \]</div>
+      <p>Small KL means the model output resembles the intended mixture. Large KL means the model has lost mixture information.</p>
+      <div class="takeaway"><b>Key assumption:</b> a convex combination of token embeddings should behave like a semantic or probabilistic mixture of those tokens. The experiments below suggest this assumption often fails.</div>
+    </div>
+    <div class="margin-right-block">
+      The issue is not whether the vector mathematically lies between embeddings. It does. The issue is whether the transformer interprets that point as a meaningful mixture.
+    </div>
+  </div>
+
+  <div class="content-margin-container" id="repeat">
+    <div class="margin-left-block"></div>
+    <div class="main-content-block">
+      <h1>A simple repeat-token probe</h1>
+      <p>The first probe is intentionally simple. We ask the model to repeat a word, but instead of giving it a normal token, we give it a soft token made from a mixture of token embeddings.</p>
+      <p>Formally, for a mixture \(p\), we construct</p>
+      <div class="equation">\[
+        e_{\mathrm{soft}} = \sum_{i=1}^{|V|} p_i e_i
+      \]</div>
+      <p>and append it to the prompt</p>
+      <div class="equation">\[
+      \begin{aligned}
+      &\texttt{``Answer using one word.''} \\
+      &\texttt{``Repeat this word once.''} + e_{\mathrm{soft}} .
+      \end{aligned}
+      \]</div>
+      <p>If the model understood the soft token, then the output distribution \(q\) should be close to \(p\). For example, a token that is 70% <code>green</code> and 30% <code>blue</code> should lead to roughly that mixture in the next-token distribution.</p>
+      <p>That is not what happens. The model mostly outputs whichever token has slightly more mass. Around the midpoint, the output switches sharply from one token to the other.</p>
+      <div id="fig-repeat">
+        <img src="./assets/p5_img1.png" alt="Repeat-token soft-token probe">
+        <div class="figure-caption"><strong>Figure 1: Soft-token collapse in a repeat-token probe.</strong> On the left, the model sharply switches between blue and green rather than smoothly tracking the mixture probability. On the right, a three-token mixture produces large regions dominated by a single color instead of a smooth interpolation.</div>
+      </div>
+      <div class="takeaway"><b>Takeaway:</b> the model sees the soft token, but it does not treat it as a probability distribution. It behaves more like nearest-token decoding.</div>
+    </div>
+    <div class="margin-right-block">
+      This is the cleanest failure mode: the desired behavior is obvious, and the observed behavior is almost binary.
+    </div>
+  </div>
+
+  <div class="content-margin-container" id="sentiment">
+    <div class="margin-left-block"></div>
+    <div class="main-content-block">
+      <h1>The same thing appears in sentiment</h1>
+      <p>To check that the effect is not only about repeating color words, we also tried a small sentiment probe. We feed a sentiment model a sentence of the form <code>This movie is v</code>, where \(v\) is a soft token interpolating between the embeddings of <code>good</code> and <code>bad</code>:</p>
+      <div class="equation">\[
+        v = p e_{\texttt{good}} + (1-p)e_{\texttt{bad}} .
+      \]</div>
+      <p>If the soft token preserves meaning, then the sentiment score should vary smoothly with the amount of <code>good</code> in the mixture. Instead, the score stays near one extreme and then flips sharply near the midpoint.</p>
+      <div id="fig-sentiment">
+        <img src="./assets/p5_img2.png" alt="Sentiment soft-token probe" style="width: 760px;">
+        <div class="figure-caption"><strong>Figure 2: Sentiment also changes like a threshold.</strong> The input soft token moves continuously from <code>bad</code> to <code>good</code>, but the model response behaves more like a hard decision boundary than a smooth semantic interpolation.</div>
+      </div>
+    </div>
+    <div class="margin-right-block">
+      This made the result feel less like a quirk of the repeat prompt and more like a general issue with embedding interpolation.
+    </div>
+  </div>
+
+  <div class="content-margin-container" id="why">
+    <div class="margin-left-block"></div>
+    <div class="main-content-block">
+      <h1>Why might this happen?</h1>
+      <p>The simple explanation is that the embedding space is not automatically a semantic probability simplex. Even if the input vector is a linear combination of token embeddings, the transformer applies nonlinear maps after that point.</p>
+      <p>Let \(\phi\) denote the model's early transformation of the input embedding. As \(p\) varies, the mixture embedding moves along a straight line in embedding space, but the transformed representation \(\phi(e_{\mathrm{soft}})\) may fall into regions that behave like one discrete token or another. In the extreme, the next-token distribution behaves like</p>
+      <div class="equation">\[
+        q(\cdot \mid e_{\mathrm{soft}}) \approx q(\cdot \mid e_j), \qquad
+        j = \arg\max_i p_i .
+      \]</div>
+      <p>In that picture, the model is not carrying the full distribution forward. It is compressing the mixture into the most likely component. This is a problem for any method that hopes soft tokens preserve multiple possible reasoning paths.</p>
+      <div class="takeaway"><b>Main point:</b> mixing embeddings is not the same as mixing meanings. The model may collapse the mixture before any useful continuous reasoning happens.</div>
+    </div>
+    <div class="margin-right-block">
+      This is also why I like the title. The mathematical operation is mixing, but the model does not necessarily preserve the meaning of the mixture.
+    </div>
+  </div>
+
+  <div class="content-margin-container" id="training">
+    <div class="margin-left-block"></div>
+    <div class="main-content-block">
+      <h1>Can fine-tuning teach the model to understand mixtures?</h1>
+      <p>One natural response is: maybe pretrained models fail because they were only trained on discrete tokens. So we tried a more direct training objective. During fine-tuning, the model sees a soft token built from a mixture and is trained so that its next-token distribution matches the target mixture.</p>
+      <p>The training setup follows the soft next-token idea. We sample a small set of candidate tokens \(\{x_{i_1},\dots,x_{i_n}\}\), sample a probability vector \(p \in \Delta^n\), and form a soft embedding</p>
+      <div class="equation">\[
+        e_{\mathrm{soft}} = \sum_{j=1}^{n} p_j e_{x_{i_j}} .
+      \]</div>
+      <p>The model then receives a prompt \(P\) concatenated with this soft embedding and produces a next-token distribution</p>
+      <div class="equation">\[
+        q_\theta(\cdot) = M_\theta(P \Vert e_{\mathrm{soft}}) .
+      \]</div>
+      <p>The soft-token loss asks the model output to match the intended mixture:</p>
+      <div class="equation">\[
+        \mathcal{L}_{\mathrm{soft}}(\theta) = D_{\mathrm{KL}}(p \Vert q_\theta) .
+      \]</div>
+      <p>In practice, we also want the fine-tuned model to preserve normal discrete-token behavior. So the loss can include a hard-token preservation term, comparing the fine-tuned model to the original model on ordinary token inputs:</p>
+      <div class="equation">\[
+      \mathcal{L}(\theta)
+      = (1-\gamma)D_{\mathrm{KL}}\!\left(q_\theta(\cdot \mid P \Vert x) \Vert q_0(\cdot \mid P \Vert x)\right)
+      + \gamma D_{\mathrm{KL}}\!\left(p \Vert q_\theta(\cdot \mid P \Vert e_{\mathrm{soft}})\right).
+      \]</div>
+      <p>We tried this with LoRA fine-tuning on Qwen-style models. In one run, we froze the pretrained model and trained LoRA adapters on soft-token examples constructed from WikiText-style prompts, using mixtures over two candidate tokens. The training loss decreases, which means the model is optimizing the synthetic objective to some extent.</p>
+      <div id="fig-training" class="image-row two">
+        <div>
+          <img src="./assets/p6_img1.png" alt="Soft-token training loss">
+          <div class="panel-label">Training loss decreases</div>
+        </div>
+        <div>
+          <img src="./assets/p6_img2.png" alt="MixtureBench evaluation histogram">
+          <div class="panel-label">MixtureBench remains imperfect</div>
+        </div>
+      </div>
+      <div class="figure-caption"><strong>Figure 3: Fine-tuning is not a clean fix.</strong> The model can optimize the soft-token objective to some extent, but this does not yet give robust mixture understanding. The result is better viewed as a preliminary attempt than as a solved method.</div>
+      <p>The important part is what we do <em>not</em> claim: fine-tuning did not clearly fix the problem. On held-out mixture probes, the behavior still shows substantial collapse, and the improvements are not strong enough for us to say that the model genuinely understands soft tokens. We are still working on whether better data, longer training, different objectives, or architectural changes are necessary.</p>
+      <div class="takeaway"><b>Current conclusion:</b> fine-tuning helps a little in some settings, but it does not remove the core collapse behavior. Soft-token reasoning likely needs more than simply applying a small adapter with a KL loss.</div>
+    </div>
+    <div class="margin-right-block">
+      I removed the combining-function section and the downstream benchmark claims. The honest story is: good diagnostic, incomplete fix.
+    </div>
+  </div>
+
+  <div class="content-margin-container" id="mixturebench">
+    <div class="margin-left-block"></div>
+    <div class="main-content-block">
+      <h1>MixtureBench: a small diagnostic benchmark</h1>
+      <p>To make the collapse behavior easier to test systematically, we built MixtureBench: a controlled benchmark for soft-token understanding. The idea is to create categories where the intended interpolation is relatively clear, such as color or sentiment, then vary the mixture probabilities and prompt phrasing.</p>
+      <p>The benchmark is not meant to prove that continuous reasoning is impossible. It is meant to catch a very specific failure mode: the model receives a continuous vector that should represent a mixture, but its output behaves as if one discrete component had won.</p>
+      <p>For a prompt \(P\), a candidate token set \(\{x_1,\dots,x_k\}\), and model-generated continuations \(y_i = M(P \Vert x_i)\), we can synthesize a target mixture by sampling \(p \in \Delta^k\) and forming</p>
+      <div class="equation">\[
+        x_{\mathrm{soft}} = \sum_{i=1}^{k} p_i e_{x_i}, \qquad
+        y_{\mathrm{target}} = \sum_{i=1}^{k} p_i y_i .
+      \]</div>
+      <p>This gives a controlled way to ask: when the model sees \(P \Vert x_{\mathrm{soft}}\), does it output something close to \(y_{\mathrm{target}}\), or does it collapse toward one of the \(y_i\)?</p>
+      <div class="takeaway"><b>Why this is useful:</b> MixtureBench turns “does the model understand soft tokens?” into a measurable question rather than a visual intuition.</div>
+    </div>
+    <div class="margin-right-block">
+      This is the part I would emphasize on the website: diagnostic tools and failure modes, not big claims about solving reasoning.
+    </div>
+  </div>
+
+  <div class="content-margin-container" id="limits">
+    <div class="margin-left-block"></div>
+    <div class="main-content-block">
+      <h1>Limitations</h1>
+      <p>This is an exploratory project. The probes are controlled and useful, but they are not a full theory of continuous reasoning. They show that one common construction, weighted averaging in embedding space, can fail badly. They do not rule out all possible continuous reasoning methods.</p>
+      <p>The fine-tuning experiments are also preliminary. We used synthetic mixture data and parameter-efficient adaptation, which may not be enough to change how the model organizes its embedding space. It is possible that larger-scale training or architectures designed for continuous latent states would behave differently.</p>
+      <p>Finally, this work should not be read as saying that continuous reasoning is impossible. The point is more modest: if a method relies on soft tokens, it should verify that the model actually preserves mixture semantics instead of silently collapsing to a discrete component.</p>
+    </div>
+    <div class="margin-right-block">
+      The useful contribution is the diagnostic lens: before using soft tokens for reasoning, check whether the model understands them at all.
+    </div>
+  </div>
+
+  <div class="content-margin-container" id="conclusion">
+    <div class="margin-left-block"></div>
+    <div class="main-content-block">
+      <h1>Conclusion and future work</h1>
+      <p>Soft-token reasoning is an appealing idea, but the simplest version has a basic problem: convex combinations of embeddings do not necessarily behave like convex combinations of meanings. In our probes, pretrained models often collapse soft tokens to their dominant discrete component.</p>
+      <p>Fine-tuning models such as Qwen on a soft next-token loss did not fully fix the issue. The model can reduce training loss, but robust mixture understanding remains unresolved. For now, I think the right framing is not “we solved continuous reasoning,” but rather “here is a simple failure mode that soft-token methods need to confront.”</p>
+      <p>The next step is to understand whether this collapse is mainly caused by the embedding geometry, the transformer’s early layers, the pretraining objective, or the lack of native continuous-token training. If we can isolate that mechanism, then maybe we can design models that reason in continuous spaces without immediately snapping back to discrete tokens.</p>
+      <hr>
+      <div class="citation" id="references">
+        <span style="font-size:16px">References:</span><br><br>
+        <a id="ref_1"></a>[1] S. Hao, S. Sukhbaatar, D. Su, X. Li, Z. Hu, J. Weston, and Y. Tian. <i>Training Large Language Models to Reason in a Continuous Latent Space</i>. arXiv, 2024.<br><br>
+        <a id="ref_2"></a>[2] Z. Zhang, X. He, W. Yan, A. Shen, C. Zhao, S. Wang, Y. Shen, and X. E. Wang. <i>Soft Thinking: Unlocking the Reasoning Potential of LLMs in Continuous Concept Space</i>. arXiv, 2025.<br><br>
+        <a id="ref_3"></a>[3] J. Wu, J. Lu, Z. Ren, G. Hu, Z. Wu, D. Dai, and H. Wu. <i>LLMs are Single-Threaded Reasoners: Demystifying the Working Mechanism of Soft Thinking</i>. arXiv, 2025.<br><br>
+        <a id="ref_4"></a>[4] H. Zhang, M. Cisse, Y. N. Dauphin, and D. Lopez-Paz. <i>mixup: Beyond Empirical Risk Minimization</i>. ICLR, 2018.<br><br>
+        <a id="ref_5"></a>[5] E. Hu, Y. Shen, P. Wallis, Z. Allen-Zhu, Y. Li, S. Wang, L. Wang, and W. Chen. <i>LoRA: Low-Rank Adaptation of Large Language Models</i>. arXiv, 2021.<br><br>
+        <a id="ref_6"></a>[6] V. Sanh, L. Debut, J. Chaumond, and T. Wolf. <i>DistilBERT, a distilled version of BERT: smaller, faster, cheaper and lighter</i>. arXiv, 2019.<br><br>
+        <a id="ref_7"></a>[7] S. Merity, C. Xiong, J. Bradbury, and R. Socher. <i>Pointer Sentinel Mixture Models</i>. arXiv, 2016.<br><br>
+        <a id="ref_8"></a>[8] A. Yang et al. <i>Qwen3 Technical Report</i>. arXiv, 2025.<br><br>
+        <a id="ref_9"></a>[9] OpenAI et al. <i>GPT-4 Technical Report</i>. arXiv, 2024.<br><br>
+        <a id="ref_10"></a>[10] R. Quian Quiroga, L. Reddy, G. Kreiman, C. Koch, and I. Fried. <i>Invariant visual representation by single neurons in the human brain</i>. Nature, 2005.<br><br>
+      </div>
+    </div>
+    <div class="margin-right-block"></div>
+  </div>
+</body>
+</html>
