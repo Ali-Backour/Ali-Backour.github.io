@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>A Geometric View of Why Guidance Improves Diffusion Samples</title>
+  <meta property="og:title" content="A Geometric View of Why Guidance Improves Diffusion Samples" />
+  <style type="text/css">
+    body {
+      background-color: #f5f9ff;
+      margin: 0;
+      color: #1f2933;
+      line-height: 1.55;
+    }
+    .content-margin-container {
+      display: flex;
+      width: 100%;
+      justify-content: left;
+      align-items: flex-start;
+    }
+    .main-content-block {
+      width: 70%;
+      max-width: 1100px;
+      background-color: #fff;
+      border-left: 1px solid #DDD;
+      border-right: 1px solid #DDD;
+      padding: 18px 24px 18px 24px;
+      font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      box-sizing: border-box;
+    }
+    .margin-left-block {
+      font-size: 14px;
+      width: 15%;
+      max-width: 150px;
+      position: relative;
+      margin-left: 10px;
+      text-align: left;
+      font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      padding: 5px;
+      box-sizing: border-box;
+    }
+    .margin-right-block {
+      font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      width: 25%;
+      max-width: 285px;
+      position: relative;
+      text-align: left;
+      padding: 14px;
+      color: #52616b;
+      box-sizing: border-box;
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: auto;
+    }
+    a:link, a:visited { color: #0e7862; text-decoration: none; }
+    a:hover { color: #24b597; }
+    h1 {
+      font-size: 22px;
+      margin-top: 10px;
+      margin-bottom: 8px;
+      font-family: "Courier New", Courier, monospace;
+      color: #0f172a;
+    }
+    h2 {
+      font-size: 17px;
+      margin-top: 14px;
+      margin-bottom: 4px;
+      color: #0f172a;
+    }
+    p { margin: 0.55em 0; }
+    table.header {
+      font-weight: 300;
+      font-size: 17px;
+      width: 100%;
+    }
+    table td, table td * { vertical-align: middle; position: relative; }
+    hr {
+      height: 1px;
+      border: none;
+      background-color: #DDD;
+      margin: 20px 0;
+    }
+    div.hypothesis {
+      width: 84%;
+      background-color: #f1f5f9;
+      border: 1px solid #94a3b8;
+      border-radius: 10px;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 18px;
+      text-align: center;
+      margin: 18px auto;
+      padding: 16px;
+    }
+.equation {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 14px 12px;
+  margin: 12px auto;
+  text-align: center;
+  overflow-x: auto;
+  color: #0f172a;
+  font-size: 20px;
+}
+
+.equation math {
+  font-family: serif;
+}
+    .image-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      align-items: start;
+    }
+    .image-row.two { grid-template-columns: repeat(2, 1fr); }
+    .panel-label {
+      text-align: center;
+      font-size: 13px;
+      color: #52616b;
+      margin-top: 4px;
+    }
+    .small-table {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: 14px;
+      margin: 12px 0;
+    }
+    .small-table th, .small-table td {
+      border-bottom: 1px solid #e2e8f0;
+      padding: 6px 8px;
+      text-align: right;
+    }
+    .small-table th:first-child, .small-table td:first-child { text-align: left; }
+    .citation {
+      font-size: 0.9em;
+      background-color: #fff;
+      padding: 10px 0;
+      height: auto;
+    }
+    .toc {
+      position: fixed;
+      max-width: inherit;
+      top: max(20%, 120px);
+    }
+    .toc a { font-size: 13px; }
+    .takeaway {
+      border-left: 4px solid #0e7862;
+      background: #f8fafc;
+      padding: 10px 14px;
+      margin: 14px 0;
+      color: #334155;
+    }
+    @media (max-width: 900px) {
+      .content-margin-container { display: block; }
+      .main-content-block { width: 100%; border-left: none; border-right: none; }
+      .margin-left-block, .margin-right-block { display: none; }
+      .image-row, .image-row.two { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="content-margin-container">
+    <div class="margin-left-block"></div>
+    <div class="main-content-block">
+      <table class="header" align="left">
+        <tr>
+          <td colspan="4">
+            <span style="font-size: 32px; font-family: 'Courier New', Courier, monospace;">A Geometric View of Why Guidance Improves Diffusion Samples</span>
+          </td>
+        </tr>
+        <tr>
+          <td align="left"><span style="font-size:17px"><a href="https://ali-backour.github.io/">Ali Backour</a></span></td>
+        </tr>
+        <tr>
+        </tr>
+      </table>
+    </div>
+    <div class="margin-right-block"></div>
+  </div>
+
+  <div class="content-margin-container" id="intro">
+    <div class="margin-left-block">
+      <div class="toc">
+        <b style="font-size:16px">Outline</b><br><br>
+        <a href="#intro">The puzzle</a><br><br>
+        <a href="#related">Related work</a><br><br>
+        <a href="#catenoid">A toy world</a><br><br>
+        <a href="#score">Why geometry matters</a><br><br>
+        <a href="#images">Real images</a><br><br>
+        <a href="#controls">Artifact controls</a><br><br>
+        <a href="#limits">Limitations</a><br><br>
+      </div>
+    </div>
+<div id="fig-catenoid-guidance" class="main-content-block">
+  <div class="image-row">
+    <div>
+      <img src="./images/catenoid_ground_truth.png" alt="Target catenoid distribution">
+      <div class="panel-label">Target distribution</div>
+    </div>
+
+    <div>
+      <img src="./images/catenoid_unguided.png" alt="Unguided diffusion samples">
+      <div class="panel-label">Unguided diffusion</div>
+    </div>
+
+    <div>
+      <img src="./images/catenoid_conditional.png" alt="Conditional diffusion samples">
+      <div class="panel-label">Conditioned on z</div>
+    </div>
+  </div>
+
+  <div class="figure-caption">
+    <strong>Figure 1: Guidance corrects geometric undercoverage on a catenoid.</strong>
+    The target distribution places mass across the full catenoid surface, including the narrow high-curvature neck.
+    Unguided diffusion captures the overall shape but underrepresents parts of the surface, especially around the neck and boundary-like regions.
+    Conditioning on the axial coordinate z  substantially improves coverage, suggesting that guidance can reduce geometry-dependent sampling bias.
+  </div>
+</div>
+    <div class="margin-right-block">
+      The whole project starts from this picture. The unguided model learns the surface, but it does not cover it evenly. Conditioning on the vertical coordinate largely fixes the missing mass near the neck.
+    </div>
+  </div>
+
+  <div class="content-margin-container">
+    <div class="margin-left-block"></div>
+    <div class="main-content-block">
+      <h1>The puzzle</h1>
+      <p>Modern text-to-image diffusion models are rarely used in their purely unguided form. In principle, this is surprising: if a diffusion model has learned the data distribution well, then its unguided reverse process should already produce sharp, coherent, high-quality samples. In practice, however, we almost always turn on some form of guidance, especially classifier-free guidance <a href="#ref_2">[2]</a>. Increasing the guidance scale often makes images sharper, more detailed, and more aligned with the prompt. This empirical success leaves a basic mystery: <em>what exactly is wrong with the unguided model?</em> Purely unguided samples are often noticeably worse—blurrier, less structured, and less semantically coherent.</p>
+      <p>The usual answer is that guidance improves conditional alignment. That is true, but it is not the whole story. Guidance does not merely choose between labels or prompts. It changes the sampling dynamics. It can make an otherwise blurry, average-looking sample move toward a more structured and specific one.</p>
+      <div class="hypothesis">Hypothesis: unguided diffusion underrepresents regions of the data distribution that are locally harder to model. Guidance partially corrects this bias.</div>
+      <p>In this post we test a geometric version of that hypothesis. The idea is simple: some parts of a data manifold may be harder to learn because the score field changes faster there. A low-capacity or imperfect model may still learn the overall support, while putting too little probability mass on those difficult regions. Guidance may then help by pushing samples back toward them.</p>
+      <p>The evidence comes in two parts. First, we use a toy manifold where the geometry is known exactly. Then we look at generated images, where true manifold curvature is inaccessible, using finite-difference curvature proxies in learned representation spaces.</p>
+    </div>
+    <div class="margin-right-block">
+      The goal is not to prove that classifier-free guidance literally optimizes curvature. The goal is to test whether the guided-vs-unguided gap has a geometric signature.
+    </div>
+  </div>
+
+  <div class="content-margin-container" id="related">
+    <div class="margin-left-block"></div>
+    <div class="main-content-block">
+      <h1>What is already known?</h1>
+      <p>There are at least three existing stories about why guidance helps. The first is the standard conditional-sampling story. Diffusion models learn to reverse a noising process <a href="#ref_1">[1]</a>, and classifier-free guidance combines an unconditional prediction with a conditional one so that samples follow the prompt more strongly <a href="#ref_2">[2]</a>. This explains why guided samples are more aligned with text, but it does not fully explain why the unguided samples are often blurry, average-looking, or structurally weak in the first place.</p>
+      <p>The second story comes from methods that improve <em>unguided</em> sampling without adding external labels or prompts. Self-attention guidance, perturbed-attention guidance, and smoothed energy guidance all construct a weaker or perturbed version of the model during sampling, then use the difference as a correction signal <a href="#ref_5">[5]</a><a href="#ref_8">[8]</a><a href="#ref_6">[6]</a>. These works suggest that something is systematically wrong with the raw unguided reverse process, not merely with text conditioning.</p>
+      <p>The third story is geometric. Recent work studies diffusion near low-dimensional data manifolds and shows that the score can decompose into normal and tangential components, with statistical difficulty depending on geometric quantities such as curvature or reach <a href="#ref_9">[9]</a><a href="#ref_10">[10]</a>. Other papers analyze guidance itself as a predictor-corrector step or as a correction for imperfect learned dynamics <a href="#ref_11">[11]</a><a href="#ref_12">[12]</a>. Closely related guidance methods also explicitly constrain or decompose guidance directions to avoid leaving the data manifold or producing oversaturated artifacts <a href="#ref_13">[13]</a><a href="#ref_7">[7]</a>.</p>
+      <div class="takeaway"><b>Where this post fits:</b> instead of proposing a new guidance method, we ask whether the unguided-vs-guided gap has a geometric signature. In particular, do unguided models underrepresent regions that are locally harder to model, and does guidance push samples back toward those regions?</div>
+    </div>
+    <div class="margin-right-block">
+      We keep the related work near the beginning because it clarifies the gap: this is not another “guidance improves samples” observation, but a hypothesis about what kind of regions unguided sampling misses.
+    </div>
+  </div>
+
+
+  <div class="content-margin-container" id="catenoid">
+    <div class="margin-left-block"></div>
+    <div class="main-content-block">
+      <h1>A toy world where curvature is visible</h1>
+      <p>For a controlled experiment, we use a catenoid: a two-dimensional surface in three-dimensional space which is shown in <a href="#fig-catenoid-guidance">Figure 1</a>. It looks like two flared sheets connected by a narrow neck. The important feature is that the geometry is not uniform. The neck is the highest-curvature region, while the outer parts are flatter.</p>
+      <div class="equation">u(z, θ) = (cosh(z) cos θ, cosh(z) sin θ, z)</div>
+      <p>We train a small diffusion model, with roughly 2.2K parameters, on samples from this surface. This setting is intentionally simple. Unlike real images, we know the data manifold, we know where the high-curvature region is, and we can directly ask whether the generated distribution puts the right amount of probability mass at each value of <code>z</code>.</p>
+<p>
+As shown in <a href="#fig-catenoid-guidance">Figure 1</a>, the result is not that the unguided model completely fails. It learns the rough catenoid shape. The failure is subtler: it misallocates probability mass. In particular, the generated samples visibly thin out near the neck, the region where the surface bends most quickly. The model also shows boundary effects near the truncated ends of the surface.
+</p>      
+<div class="takeaway"><b>Takeaway from the toy experiment:</b> the model can learn the support of the manifold while still underrepresenting geometrically difficult regions.</div>
+    </div>
+    <div class="margin-right-block">
+      This is the useful part of the toy setting. We can separate “does the sample lie near the surface?” from “does the model place the right amount of mass on each part of the surface?”
+    </div>
+  </div>
+
+  <div class="content-margin-container">
+    <div class="margin-left-block"></div>
+    <div class="main-content-block">
+      <img src="./images/catenoid_z_distribution.png" style="width: 760px;">
+    </div>
+    <div class="margin-right-block">
+      Distributional error along the catenoid coordinate. The interesting signal is not only global sample quality, but where on the manifold mass is missing or added.
+    </div>
+  </div>
+
+  <div class="content-margin-container">
+    <div class="margin-left-block"></div>
+    <div class="main-content-block">
+      <h1>Conditioning removes the easiest escape route</h1>
+      <p>Next we train the same model with conditioning on the catenoid coordinate <code>z</code>. This is not literally classifier-free guidance, but it is a clean analogue: the model is no longer asked to represent the whole distribution at once. It must model the conditional distribution at each slice of the surface.</p>
+      <p>That changes the failure mode. As in <a href="#fig-catenoid-guidance">Figure 1</a>, once the model is conditioned on <code>z</code>, it can no longer “pay for” a hard region by putting less mass there. The coverage near the neck becomes much closer to the target distribution.</p>
+      <p>This suggests one possible interpretation of guidance. Guidance may not only improve prompt alignment; it may also reduce the model's freedom to average over, blur, or avoid difficult regions of the distribution (e.g. the neck area of the catenoid).</p>
+    </div>
+    <div class="margin-right-block">
+      The analogy is imperfect: conditioning on <code>z</code> in a catenoid is cleaner than CFG in a text-to-image model. But it isolates the mechanism: conditioning can counteract geometry-dependent mass redistribution.
+    </div>
+  </div>
+
+<div class="content-margin-container" id="score">
+  <div class="margin-left-block"></div>
+  <div class="main-content-block">
+    <h1>Why would curvature make diffusion harder?</h1>
+
+    <p>A diffusion model can be viewed as learning a score field: a vector field that tells noisy samples how to move back toward high-density data. If the clean data distribution is concentrated near a low-dimensional manifold <code>M</code>, then the noisy distribution at scale <code>σ</code> has score</p>
+
+    <div class="equation">
+      <math display="block">
+        <msub><mi>s</mi><mi>&sigma;</mi></msub>
+        <mo stretchy="false">(</mo><mi>z</mi><mo stretchy="false">)</mo>
+        <mo>=</mo>
+        <msub><mo>&nabla;</mo><mi>z</mi></msub>
+        <mi>log</mi>
+        <msub><mi>p</mi><mi>&sigma;</mi></msub>
+        <mo stretchy="false">(</mo><mi>z</mi><mo stretchy="false">)</mo>
+      </math>
+    </div>
+
+    <p>When <code>σ</code> is small, this score has a simple geometric interpretation. For a noisy point <code>z</code> near the manifold, the dominant part of the score points back toward the nearest clean point on the manifold.</p>
+
+    <p>Let <code>x = Π<sub>M</sub>(z)</code> be the nearest-point projection of <code>z</code> onto the manifold <code>M</code>. We can write</p>
+
+    <div class="equation">
+      <math display="block">
+        <mi>z</mi>
+        <mo>=</mo>
+        <mi>x</mi>
+        <mo>+</mo>
+        <mi>v</mi>
+        <mo>,</mo>
+        <mspace width="1em"></mspace>
+        <mi>v</mi>
+        <mo>&isin;</mo>
+        <msub><mi>N</mi><mi>x</mi></msub>
+        <mi>M</mi>
+      </math>
+    </div>
+
+    <p>where <code>N<sub>x</sub>M</code> is the normal space at <code>x</code>. To first order, the normal component of the score behaves like</p>
+
+    <div class="equation">
+      <math display="block">
+        <msub><mi>s</mi><mi>&sigma;</mi></msub>
+        <mo stretchy="false">(</mo><mi>z</mi><mo stretchy="false">)</mo>
+        <mo>&approx;</mo>
+        <mo>&minus;</mo>
+        <mfrac>
+          <mi>v</mi>
+          <msup><mi>&sigma;</mi><mn>2</mn></msup>
+        </mfrac>
+        <mo>=</mo>
+        <mo>&minus;</mo>
+        <mfrac>
+          <mrow>
+            <mi>z</mi>
+            <mo>&minus;</mo>
+            <msub><mi>&Pi;</mi><mi>M</mi></msub>
+            <mo stretchy="false">(</mo><mi>z</mi><mo stretchy="false">)</mo>
+          </mrow>
+          <msup><mi>&sigma;</mi><mn>2</mn></msup>
+        </mfrac>
+      </math>
+    </div>
+    <p>Thus, learning the score requires learning how nearby noisy points project back onto the manifold. Curvature matters because it controls how quickly this projection changes: on a flat plane the normal direction is constant, while on a sharply curved surface small movements can substantially change the normal direction and therefore the denoising vector.</p>
+
+<p>This suggests a simple failure mode. High-curvature regions induce faster-varying score fields, which may be harder to approximate with limited capacity, data, or optimization. Sampling can then turn these local score errors into coverage errors: the model may learn the overall support while assigning too little probability mass to geometrically difficult regions.</p>
+</div>
+
+  <div class="margin-right-block">
+    The key point is that the score depends on the nearest-point projection back to the manifold. Curvature makes this projection map change faster, so the denoising vector field becomes harder to approximate.
+  </div>
+</div>
+
+  <div class="content-margin-container" id="images">
+    <div class="margin-left-block"></div>
+    <div class="main-content-block">
+      <h1>Real images: measuring geometry without the manifold</h1>
+      <p>For real images, the true image manifold lives in a very high-dimensional space, and estimating its curvature directly is inaccessible. In order to get an estimate of what the curvature of the manifold at some point is, we turn to encoders <code>f</code>, such as the VAE of a latent diffusion model or DINO.</p>
+
+      <p>First, we define the sensitivity of <code>f</code> at a point <code>x</code> to be</p>
+
+      <div class="equation">
+        <math display="block">
+          <msub><mi>S</mi><mi>f</mi></msub>
+          <mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo>
+          <mo>=</mo>
+          <msub><mi mathvariant="double-struck">E</mi><mi>&eta;</mi></msub>
+          <mo>[</mo>
+          <mfrac>
+            <msub>
+              <mrow>
+                <mo stretchy="true">||</mo>
+                <mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo>+</mo><mi>&eta;</mi><mo stretchy="false">)</mo>
+                <mo>&minus;</mo>
+                <mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo>
+                <mo stretchy="true">||</mo>
+              </mrow>
+              <mn>2</mn>
+            </msub>
+            <msub>
+              <mrow><mo stretchy="true">||</mo><mi>&eta;</mi><mo stretchy="true">||</mo></mrow>
+              <mn>2</mn>
+            </msub>
+          </mfrac>
+          <mo>]</mo>
+        </math>
+      </div>
+      <p>One can think of <code>S_f</code> as an estimate of how much the encoder <code>f</code> disturbs the space around the point <code>x</code>. This corresponds to a first-order measurement of the local geometry, analogous to the first fundamental form of the manifold.</p>
+
+      <p>Hence, the change of the sensitivity at a point <code>x</code> is a measure of how bent the space is, i.e. curvature. This motivates us to define the curvature proxy</p>
+
+      <div class="equation">
+        <math display="block">
+          <msub><mi>C</mi><mi>f</mi></msub>
+          <mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo>
+          <mo>=</mo>
+          <msub><mi mathvariant="double-struck">E</mi><mi>&eta;</mi></msub>
+          <mo>[</mo>
+          <mfrac>
+            <msub>
+              <mrow>
+                <mo stretchy="true">||</mo>
+                <msub><mi>S</mi><mi>f</mi></msub>
+                <mo stretchy="false">(</mo><mi>x</mi><mo>+</mo><mi>&eta;</mi><mo stretchy="false">)</mo>
+                <mo>&minus;</mo>
+                <msub><mi>S</mi><mi>f</mi></msub>
+                <mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo>
+                <mo stretchy="true">||</mo>
+              </mrow>
+              <mn>2</mn>
+            </msub>
+            <msub>
+              <mrow>
+                <mo stretchy="true">||</mo>
+                <mi>&eta;</mi>
+                <msub><mi>S</mi><mi>f</mi></msub>
+                <mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo>
+                <mo stretchy="true">||</mo>
+              </mrow>
+              <mn>2</mn>
+            </msub>
+          </mfrac>
+          <mo>]</mo>
+        </math>
+      </div>
+
+      <p>Geometrically, this is analogous to measuring how rapidly the local tangent behavior changes around <code>x</code>, which is the basic phenomenon underlying curvature.</p>
+
+      <p>We generate images with Stable Diffusion <a href="#ref_3">[3]</a> while varying the classifier-free guidance scale from <code>w = 0</code> to <code>w = 9</code> for 20 different prompts. For each prompt and guidance value, We compute the curvature proxy in two representation spaces: SD-VAE (the VAE encoder in the Stable Diffusion model <a href="#ref_3">[3]</a>) and DINO <a href="#ref_4">[4]</a>.</p>
+<table class="small-table" id="table_1">
+  <caption>
+    <strong>Table 1: Curvature proxy increases with guidance.</strong>
+    For each representation, the entries under each guidance scale w report the median curvature proxy across prompts.
+    “Positive prompts” counts how many prompts had a higher curvature proxy at w = 9 than at w = 0.
+    “Median Δ 0→9” reports the median relative increase from unguided sampling to high-guidance sampling.
+  </caption>
+  <tr>
+    <th>Representation</th>
+    <th>w=0</th>
+    <th>w=3</th>
+    <th>w=6</th>
+    <th>w=9</th>
+    <th>Positive prompts</th>
+    <th>Median Δ 0→9</th>
+  </tr>
+  <tr>
+    <td>SD-VAE</td>
+    <td>1.74</td>
+    <td>3.15</td>
+    <td>5.01</td>
+    <td>5.16</td>
+    <td>19/20</td>
+    <td>134.0%</td>
+  </tr>
+  <tr>
+    <td>DINO</td>
+    <td>1.73</td>
+    <td>3.74</td>
+    <td>5.85</td>
+    <td>6.19</td>
+    <td>19/20</td>
+    <td>272.5%</td>
+  </tr>
+</table>
+    </div>
+  </div>
+
+  <div class="content-margin-container">
+    <div class="margin-left-block"></div>
+    <div class="main-content-block">
+<div id="fig-guidance-curvature">
+  <div class="image-row two">
+    <div>
+      <img src="./images/sdvae_guidance_curve.png" alt="SD-VAE curvature proxy as a function of guidance scale">
+      <div class="panel-label">SD-VAE curvature proxy vs guidance</div>
+    </div>
+
+    <div>
+      <img src="./images/dino_guidance_curve.png" alt="DINO curvature proxy as a function of guidance scale">
+      <div class="panel-label">DINO curvature proxy vs guidance</div>
+    </div>
+  </div>
+
+  <div class="figure-caption">
+    <strong>Figure 2: Guidance shifts samples toward higher-curvature regions in representation space.</strong>
+    For each prompt, images are generated at several classifier-free guidance scales w, and a finite-difference curvature proxy is computed in either SD-VAE or DINO feature space.
+    The black curve shows the median across prompts, the blue band shows the interquartile range, and the faint gray curves show individual prompt trajectories.
+    In both representations, curvature tends to increase with guidance, while the incremental gains become smaller at higher guidance scales.
+  </div>
+</div>
+    </div>
+    <div class="margin-right-block">
+      The absolute values across SD-VAE and DINO are not directly comparable. The important point is the within-representation trend as guidance increases.
+    </div>
+  </div>
+
+  <div class="content-margin-container">
+    <div class="margin-left-block"></div>
+    <div class="main-content-block">
+ <h1>What does this mean?</h1>
+
+<p>
+The image experiment (<a href="#fig-guidance-curvature">Figure 2</a>, <a href="#table_1">Table 1</a>) is consistent with the toy catenoid experiment. In both cases, the issue is not that unguided diffusion completely fails. Rather, it seems to misallocate probability mass: it captures the rough distribution, but underrepresents regions that are geometrically harder to model. On the catenoid, this appears near the high-curvature neck; in images, unguided samples appear to lie in smoother or less locally nonlinear regions of representation space.
+</p>
+
+<p>
+This gives a different way to think about guidance. It is not only making samples “more aligned with the prompt.” <b>It is also correcting a geometric bias in the unguided model, pushing samples toward regions with more structure, detail, and local curvature</b>. This interpretation is grounded in the mathematical intuition developed earlier: regions of high curvature induce more rapidly varying score fields, making them harder for the unguided model to represent accurately. In this view, guided samples look better partly because they occupy parts of the image manifold that unguided sampling tends to underfit.
+</p>
+
+</div>
+  </div>
+
+<div class="content-margin-container" id="controls">
+  <div class="margin-left-block"></div>
+
+  <div class="main-content-block">
+    <h1>Could this just be saturation or sharpness?</h1>
+
+    <p>
+      A natural objection is that high guidance is known to create low-level artifacts. Maybe my curvature proxy is not detecting geometry at all. Maybe it is just detecting sharper edges, stronger contrast, or more saturated colors.
+    </p>
+
+    <p>
+      To test this, we take unguided images and artificially modify contrast, saturation, and sharpness. Then we recompute the same curvature proxy. These manipulations change visible image statistics, but they do not reproduce the same monotone pattern observed when the guidance scale itself is increased.
+    </p>
+
+    <div id="fig-artifact-controls">
+      <div class="image-row">
+        <div>
+          <img src="./images/contrast_control.png" alt="Contrast artifact control">
+          <div class="panel-label">Contrast control</div>
+        </div>
+
+        <div>
+          <img src="./images/saturation_control.png" alt="Saturation artifact control">
+          <div class="panel-label">Saturation control</div>
+        </div>
+
+        <div>
+          <img src="./images/sharpness_control.png" alt="Sharpness artifact control">
+          <div class="panel-label">Sharpness control</div>
+        </div>
+      </div>
+
+      <div class="figure-caption">
+        <strong>Figure 3: Artifact controls do not reproduce the guidance-curvature trend.</strong>
+        Starting from unguided images, we artificially increase contrast, saturation, or sharpness and then recompute the same curvature proxy.
+        Although these edits visibly change the images, they do not produce the same consistent monotone increase seen when the guidance scale is raised.
+      </div>
+    </div>
+    <p>
+      This supports the geometric interpretation developed above. The proxy is not simply reacting to images becoming more visually intense; it seems to capture a more structural change in the generated samples. In other words, guidance does not merely add sharpness or saturation. It appears to move samples into regions of representation space with genuinely different local geometry, consistent with the idea that unguided diffusion underfits more complex parts of the image manifold.
+    </p>
+  </div>
+
+  <div class="margin-right-block">
+    The controls are important because without them the result could be dismissed as: “guidance makes images sharper, and your metric likes sharpness.”
+  </div>
+</div>
+  <div class="content-margin-container" id="limits">
+    <div class="margin-left-block"></div>
+    <div class="main-content-block">
+<h1>Limitations</h1>
+
+<p>
+These experiments give evidence for a geometric mechanism, but they do not directly measure the true curvature of the image manifold. In the real-image setting, the curvature proxy is computed through encoders such as SD-VAE and DINO, so the absolute values depend on the representation. The main evidence is the consistent trend across different feature spaces, not the precise numerical value of the proxy.
+</p>
+
+<p>
+The catenoid experiment is also a simplified analogue of guidance, not a full model of classifier-free guidance in text-to-image systems. Conditioning on z cleanly shows that extra information can remove a geometry-dependent coverage bias on a known manifold, while CFG combines conditional and unconditional predictions across many denoising steps and interacts with prompt semantics and sampling dynamics.
+</p>
+</div>
+    <div class="margin-right-block">
+      A good next experiment would compare different generative model families, or test whether curvature-aware training can improve unguided sampling directly.
+    </div>
+  </div>
+
+  <div class="content-margin-container" id="conclusion">
+    <div class="margin-left-block"></div>
+    <div class="main-content-block">
+<h1>Conclusion and Future Work</h1>
+
+<p>
+Overall, these results suggest that guidance does more than improve prompt alignment: it may also correct a geometry-dependent weakness in unguided diffusion. On the catenoid, the unguided model learns the global surface but misallocates mass near difficult regions such as the high-curvature neck and boundaries. In real images, increasing guidance consistently moves samples toward higher curvature-like regions in SD-VAE and DINO feature spaces, while artifact controls suggest that this trend is not simply caused by saturation, contrast, or sharpness.
+</p>
+
+<p>
+ The most important future direction is to turn this diagnosis into a fix: if unguided diffusion underrepresents geometrically difficult regions, can we design training objectives, sampling corrections, or curvature-aware regularizers that improve unguided generation directly, without relying on guidance as a post-hoc correction?
+</p>
+
+<hr>
+      <div class="citation" id="references">
+        <span style="font-size:16px">References:</span><br><br>
+        <a id="ref_1"></a>[1] P. Dhariwal and A. Q. Nichol. <i>Diffusion Models Beat GANs on Image Synthesis</i>. NeurIPS, 2021.<br><br>
+        <a id="ref_2"></a>[2] J. Ho and T. Salimans. <i>Classifier-Free Diffusion Guidance</i>. NeurIPS Workshop, 2021.<br><br>
+        <a id="ref_3"></a>[3] R. Rombach, A. Blattmann, D. Lorenz, P. Esser, and B. Ommer. <i>High-Resolution Image Synthesis with Latent Diffusion Models</i>. CVPR, 2022.<br><br>
+        <a id="ref_4"></a>[4] M. Caron et al. <i>Emerging Properties in Self-Supervised Vision Transformers</i>. ICCV, 2021.<br><br>
+        <a id="ref_5"></a>[5] S. Hong, G. Lee, W. Jang, and S. Kim. <i>Improving Sample Quality of Diffusion Models Using Self-Attention Guidance</i>. arXiv, 2022.<br><br>
+        <a id="ref_6"></a>[6] S. Hong. <i>Smoothed Energy Guidance: Guiding Diffusion Models with Reduced Energy Curvature of Attention</i>. arXiv, 2024.<br><br>
+        <a id="ref_7"></a>[7] S. Sadat, O. Hilliges, and R. M. Weber. <i>Eliminating Oversaturation and Artifacts of High Guidance Scales in Diffusion Models</i>. ICLR, 2025.<br><br>
+        <a id="ref_8"></a>[8] D. Ahn et al. <i>Self-Rectifying Diffusion Sampling with Perturbed-Attention Guidance</i>. arXiv, 2024.<br><br>
+        <a id="ref_9"></a>[9] T. Farghly, P. Potaptchik, S. Howard, G. Deligiannidis, and J. Pidstrigach. <i>Diffusion Models and the Manifold Hypothesis: Log-Domain Smoothing is Geometry Adaptive</i>. arXiv, 2025.<br><br>
+        <a id="ref_10"></a>[10] Z. Zhang, K. Huang, T. Zhao, M. Wang, and M. Chen. <i>Diffusion Model for Manifold Data: Score Decomposition, Curvature, and Statistical Complexity</i>. arXiv, 2026.<br><br>
+        <a id="ref_11"></a>[11] A. Bradley and P. Nakkiran. <i>Classifier-Free Guidance is a Predictor-Corrector</i>. 2024.<br><br>
+        <a id="ref_12"></a>[12] T. Karras, M. Aittala, T. Kynkäänniemi, J. Lehtinen, T. Aila, and S. Laine. <i>Guiding a Diffusion Model with a Bad Version of Itself</i>. 2024.<br><br>
+        <a id="ref_13"></a>[13] H. Chung, J. Kim, G. Y. Park, H. Nam, and J. C. Ye. <i>CFG++: Manifold-Constrained Classifier Free Guidance for Diffusion Models</i>. 2024.<br><br>
+      </div>
+    </div>
+    <div class="margin-right-block"></div>
+  </div>
+</body>
+</html>
