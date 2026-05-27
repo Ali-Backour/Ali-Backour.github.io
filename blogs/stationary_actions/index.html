@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Actions That Do Nothing: Stationary Actions as an RL Pitfall</title>
+  <meta property="og:title" content="Actions That Do Nothing: Stationary Actions as an RL Pitfall" />
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  <style type="text/css">
+    body {
+      background-color: #f5f9ff;
+      margin: 0;
+      color: #1f2933;
+      line-height: 1.55;
+    }
+    .content-margin-container {
+      display: flex;
+      width: 100%;
+      justify-content: left;
+      align-items: flex-start;
+    }
+    .main-content-block {
+      width: 70%;
+      max-width: 1100px;
+      background-color: #fff;
+      border-left: 1px solid #DDD;
+      border-right: 1px solid #DDD;
+      padding: 18px 24px 18px 24px;
+      font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      box-sizing: border-box;
+    }
+    .margin-left-block {
+      font-size: 14px;
+      width: 15%;
+      max-width: 150px;
+      position: relative;
+      margin-left: 10px;
+      text-align: left;
+      font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      padding: 5px;
+      box-sizing: border-box;
+    }
+    .margin-right-block {
+      font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      width: 25%;
+      max-width: 285px;
+      position: relative;
+      text-align: left;
+      padding: 14px;
+      color: #52616b;
+      box-sizing: border-box;
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: auto;
+    }
+    a:link, a:visited { color: #0e7862; text-decoration: none; }
+    a:hover { color: #24b597; }
+    h1 {
+      font-size: 22px;
+      margin-top: 10px;
+      margin-bottom: 8px;
+      font-family: "Courier New", Courier, monospace;
+      color: #0f172a;
+    }
+    h2 {
+      font-size: 17px;
+      margin-top: 14px;
+      margin-bottom: 4px;
+      color: #0f172a;
+    }
+    p { margin: 0.55em 0; }
+    table.header {
+      font-weight: 300;
+      font-size: 17px;
+      width: 100%;
+    }
+    table td, table td * { vertical-align: middle; position: relative; }
+    hr {
+      height: 1px;
+      border: none;
+      background-color: #DDD;
+      margin: 20px 0;
+    }
+    div.hypothesis {
+      width: 84%;
+      background-color: #f1f5f9;
+      border: 1px solid #94a3b8;
+      border-radius: 10px;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 18px;
+      text-align: center;
+      margin: 18px auto;
+      padding: 16px;
+    }
+    .equation {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 14px 12px;
+      margin: 12px auto;
+      text-align: center;
+      overflow-x: auto;
+      color: #0f172a;
+      font-size: 18px;
+    }
+    .image-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      align-items: start;
+    }
+    .panel-label {
+      text-align: center;
+      font-size: 13px;
+      color: #52616b;
+      margin-top: 4px;
+    }
+    .figure-caption {
+      font-size: 14px;
+      color: #475569;
+      margin-top: 8px;
+      line-height: 1.45;
+    }
+    .citation {
+      font-size: 0.9em;
+      background-color: #fff;
+      padding: 10px 0;
+      height: auto;
+    }
+    .toc {
+      position: fixed;
+      max-width: inherit;
+      top: max(20%, 120px);
+    }
+    .toc a { font-size: 13px; }
+    .takeaway {
+      border-left: 4px solid #0e7862;
+      background: #f8fafc;
+      padding: 10px 14px;
+      margin: 14px 0;
+      color: #334155;
+    }
+    code {
+      background: #f1f5f9;
+      padding: 1px 4px;
+      border-radius: 4px;
+    }
+    @media (max-width: 900px) {
+      .content-margin-container { display: block; }
+      .main-content-block { width: 100%; border-left: none; border-right: none; }
+      .margin-left-block, .margin-right-block { display: none; }
+      .image-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="content-margin-container">
+    <div class="margin-left-block"></div>
+    <div class="main-content-block">
+      <table class="header" align="left">
+        <tr>
+          <td colspan="4">
+            <span style="font-size: 32px; font-family: 'Courier New', Courier, monospace;">Actions That Do Nothing: Stationary Actions as an RL Pitfall</span>
+          </td>
+        </tr>
+        <tr>
+        <td align="left">
+          <span style="font-size:17px">
+            <a href="https://ali-backour.github.io/">Ali Backour</a> and
+            <a href="https://www.linkedin.com/in/sarah-mokhtar-abdella-b55815283/">Sarah Mokhtar</a>
+          </span>
+        </td>     
+         </tr>
+        <tr>
+          <td align="left"><span style="font-size:14px; color:#52616b;">May 2026 · Course project note</span></td>
+        </tr>
+      </table>
+    </div>
+    <div class="margin-right-block"></div>
+  </div>
+
+  <div class="content-margin-container" id="intro">
+    <div class="margin-left-block">
+      <div class="toc">
+        <b style="font-size:16px">Outline</b><br><br>
+        <a href="#intro">The pitfall</a><br><br>
+        <a href="#stationary">Stationary actions</a><br><br>
+        <a href="#why-hard">Why they break learning</a><br><br>
+        <a href="#penalties">Why penalties failed</a><br><br>
+        <a href="#masking">Action masking</a><br><br>
+        <a href="#results">Results</a><br><br>
+        <a href="#limits">Limitations</a><br><br>
+      </div>
+    </div>
+
+    <div class="main-content-block">
+      <h1>The pitfall</h1>
+
+      <p>
+        When building a reinforcement learning environment, it is tempting to expose a fixed action space and let the agent learn everything from rewards. In 2048, the fixed action space is tiny: up, down, left, and right. But depending on the board, some of these actions do absolutely nothing.
+      </p>
+
+      <p>
+        For example, if every row is already pushed as far left as possible and no adjacent tiles can merge, then the action <code>left</code> leaves the board unchanged. The environment accepts the action, but the state does not move.
+      </p>
+
+      <div class="hypothesis">
+        Small lesson: actions that leave the state unchanged are not neutral. In value-based RL, they can create self-reinforcing loops.
+      </div>
+
+      <p>
+        This post is a short case study from a course project on RL for 2048. The goal is not to present a state-of-the-art 2048 agent. The useful lesson is narrower: stationary actions can quietly break training, and simply giving them negative reward did not fix the problem in our experiments. The cleaner solution was to mask them out.
+      </p>
+
+      <div class="takeaway">
+        <b>Short version:</b> if an action deterministically keeps the agent in the same state, do not just hope the reward function teaches the agent to avoid it. If you can identify it, mask it.
+      </div>
+    </div>
+
+    <div class="margin-right-block">
+      This is best read as an implementation/diagnostic note: a small environment-design issue that created a surprisingly large learning problem.
+    </div>
+  </div>
+
+  <div class="content-margin-container" id="stationary">
+    <div class="margin-left-block"></div>
+    <div class="main-content-block">
+      <h1>What is a stationary action?</h1>
+
+      <p>
+        In our 2048 environment, a state is a $4 \times 4$ board and the action set is
+      </p>
+
+      <div class="equation">
+        $$\mathcal{A}=\{\text{up},\text{down},\text{left},\text{right}\}.$$
+      </div>
+
+      <p>
+        An action $a$ is stationary at state $s$ if taking it leaves the environment unchanged:
+      </p>
+
+      <div class="equation">
+        $$\Pr(S_{t+1}=s \mid S_t=s, A_t=a)=1.$$
+      </div>
+
+      <p>
+        This is not a rare corner case. As a 2048 board fills up, it becomes more constrained: fewer directions are able to slide or merge tiles. In random play, the fraction of stationary actions tends to increase as the game progresses.
+      </p>
+
+      <div class="image-row">
+        <div>
+          <img src="./images/p1_img1.png" alt="Example 2048 board">
+          <div class="panel-label">Example 2048 board</div>
+        </div>
+        <div>
+          <img src="./images/p2_img1.png" alt="Percentage of stationary actions during random play">
+          <div class="panel-label">Stationary actions become more common</div>
+        </div>
+      </div>
+
+      <div class="figure-caption">
+        <strong>Figure 1: 2048 naturally creates state-dependent action availability.</strong>
+        The action set is always displayed as four moves, but the set of moves that actually change the board depends on the state. As the board becomes more congested, useless moves become more frequent.
+      </div>
+    </div>
+
+    <div class="margin-right-block">
+      This is the key distinction: the action is not syntactically illegal, but it is dynamically useless in the current state.
+    </div>
+  </div>
+
+  <div class="content-margin-container" id="why-hard">
+    <div class="margin-left-block"></div>
+    <div class="main-content-block">
+      <h1>Why can this break value-based learning?</h1>
+
+      <p>
+        At first, stationary actions seem harmless. If an action gives no reward and changes nothing, shouldn't the agent eventually learn not to take it? In tabular RL, often yes. But with deep Q-learning, function approximation, bootstrapping, exploration, and replay buffers make the failure mode more subtle.
+      </p>
+
+      <p>
+        For a stationary action, the agent observes a transition of the form
+      </p>
+
+      <div class="equation">
+        $$(s,a,r,s).$$
+      </div>
+
+      <p>
+        The next state is the same as the current state. Therefore the Bellman target for a Q-learning style update bootstraps from the same state:
+      </p>
+
+      <div class="equation">
+        $$y = r + \gamma \max_{a'} Q_{\theta^-}(s,a').$$
+      </div>
+
+      <p>
+        This creates a self-referential update. If $Q(s,a)$ for the stationary action is overestimated, the policy may choose it again. That produces another transition from $s$ back to $s$, which adds another nearly identical sample to the replay buffer. The agent can waste many updates learning from transitions that contain no new state information.
+      </p>
+
+      <p>
+        The paper version wrote the intuition using the simplified stationary-action TD update
+      </p>
+
+      <div class="equation">
+        $$\theta_{t+1}
+        =
+        \theta_t
+        +
+        \eta\bigl(R-(1-\gamma)Q_\theta(s,a)\bigr)
+        \nabla_\theta Q_\theta(s,a).$$
+      </div>
+
+      <p>
+        The term $R-(1-\gamma)Q_\theta(s,a)$ is the important part. If the action is stationary, lowering its value through reward penalties requires $R$ to be sufficiently negative relative to the current value estimate. If the penalty is too small, the update may not push the action down enough. If the penalty is very large, it can dominate the loss and destabilize training.
+      </p>
+
+      <div class="takeaway">
+        <b>Intuition:</b> stationary actions can become sticky. The agent chooses them because they are overestimated, then the resulting transition sends it back to the same state, creating more data that reinforces the same local failure mode.
+      </div>
+    </div>
+
+    <div class="margin-right-block">
+      The issue is not only that stationary actions are bad decisions. They also create bad training data: repeated transitions with no movement through the state space.
+    </div>
+  </div>
+
+  <div class="content-margin-container" id="penalties">
+    <div class="margin-left-block"></div>
+    <div class="main-content-block">
+      <h1>Why not just give negative rewards?</h1>
+
+      <p>
+        The obvious fix is to penalize stationary actions. We tried that first. We trained DDQN while sweeping the reward for stationary actions from 0 down to -1000.
+      </p>
+
+      <p>
+        This did not cleanly solve the problem. Across the penalty sweep, the agent still struggled to learn meaningful behavior and repeatedly fell into loops of stationary actions. A random agent achieved an average score around 1000, while the unmasked DDQN variants remained poor and unstable.
+      </p>
+
+      <div>
+        <img src="./images/p2_img2.png" alt="DDQN performance with different stationary-action penalties" style="width: 760px;">
+      </div>
+
+      <div class="figure-caption">
+        <strong>Figure 2: Penalizing stationary actions did not fix the failure mode.</strong>
+        We swept negative rewards for stationary actions from 0 to -1000. The distributions remained clustered at weak performance, showing that simply making useless moves more expensive was not enough to make DDQN learn a good policy.
+      </div>
+
+      <p>
+        The reason is that a penalty is only an indirect signal. The agent still has to explore the bad action, store the transition, and learn from the target. If the penalty is mild, the bootstrapped value can still make the action look acceptable. If the penalty is extreme, the learning signal can become harsh and unstable under function approximation.
+      </p>
+
+      <p>
+        In other words, negative rewards ask the agent to learn a fact we already know: this action cannot change the state. When the environment can compute that fact exactly, it is cleaner to remove the action from consideration.
+      </p>
+
+      <div class="takeaway">
+        <b>Main lesson from the ablation:</b> reward shaping was a brittle way to handle stationary actions. The action set itself was wrong for the current state.
+      </div>
+    </div>
+
+    <div class="margin-right-block">
+      This is the central figure of the post. It is what makes the lesson more than “invalid actions are bad”: the naive penalty fix did not work.
+    </div>
+  </div>
+
+  <div class="content-margin-container" id="masking">
+    <div class="margin-left-block"></div>
+    <div class="main-content-block">
+      <h1>The solution: action masking</h1>
+
+      <p>
+        Instead of penalizing stationary actions, we mask them. At each state, the environment computes whether each action changes the board:
+      </p>
+
+      <div class="equation">
+        $$m(s,a)=
+        \begin{cases}
+        1, & f_a(s)\neq s,\\
+        0, & f_a(s)=s.
+        \end{cases}$$
+      </div>
+
+      <p>
+        For DQN, we can assign masked actions a value of $-\infty$ before choosing an action:
+      </p>
+
+      <div class="equation">
+        $$\widetilde{Q}(s,a)=
+        \begin{cases}
+        Q(s,a), & m(s,a)=1,\\
+        -\infty, & m(s,a)=0.
+        \end{cases}$$
+      </div>
+
+      <p>
+        Then the greedy action is selected only among moves that actually change the state:
+      </p>
+
+      <div class="equation">
+        $$a_t \in \arg\max_a \widetilde{Q}(s_t,a).$$
+      </div>
+
+      <p>
+        This changes the learning problem in a simple but important way. The agent no longer spends exploration or replay-buffer capacity on transitions of the form $(s,a,r,s)$ when $a$ was known in advance to do nothing. It learns among the meaningful actions available at that state.
+      </p>
+
+      <div class="takeaway">
+        <b>Masking is not just a performance trick:</b> it encodes the state-dependent action set. The environment says, “these actions are possible in the API, but they are not meaningful here.”
+      </div>
+    </div>
+
+    <div class="margin-right-block">
+      In this setting, masking is more principled than reward penalties because stationarity is exactly detectable before taking the action.
+    </div>
+  </div>
+
+  <div class="content-margin-container" id="results">
+    <div class="margin-left-block"></div>
+    <div class="main-content-block">
+      <h1>What happened after masking?</h1>
+
+      <p>
+        After adding action masking, DDQN started to learn meaningful behavior. With one million iterations, the masked agent reached an average reward around 2417 in evaluation. With longer training, around twenty million iterations, this increased to about 3153.
+      </p>
+
+      <div>
+        <img src="./images/p2_img3.png" alt="Masked DQN training and evaluation distribution" style="width: 760px;">
+      </div>
+
+      <div class="figure-caption">
+        <strong>Figure 3: Masking enabled DDQN to learn instead of looping on stationary actions.</strong>
+        Left: reward improves over training once stationary actions are excluded. Right: the evaluation distribution shifts upward when training is extended from one million to twenty million iterations.
+      </div>
+
+      <p>
+        These numbers are not meant to compete with optimized 2048 solvers. The useful empirical point is simpler: the unmasked penalty-based approach failed to produce healthy learning, while masking the stationary actions produced a much cleaner training problem.
+      </p>
+
+      <div class="takeaway">
+        <b>Main empirical result:</b> the fix was not “find the right negative reward.” The fix was to prevent the agent from selecting actions that provably cannot change the state.
+      </div>
+    </div>
+
+    <div class="margin-right-block">
+      This is why I would present the project as an RL environment-design lesson rather than as a 2048-performance result.
+    </div>
+  </div>
+
+  <div class="content-margin-container" id="limits">
+    <div class="margin-left-block"></div>
+    <div class="main-content-block">
+      <h1>Limitations</h1>
+
+      <p>
+        This is a small course-project case study. We did not build a state-of-the-art 2048 solver, and the results should not be interpreted that way. The value of the experiment is diagnostic: it shows how a seemingly harmless environment design choice can make learning much harder.
+      </p>
+
+      <p>
+        The conclusion also depends on being able to identify stationary actions exactly. In 2048 that is easy: simulate the move and check whether the board changes. In other environments, invalid or useless actions may be harder to detect, and one might need to learn an action-elimination model instead.
+      </p>
+
+      <h1>Conclusion</h1>
+
+      <p>
+        Actions that do nothing are not always harmless. In 2048, they become more common as the board fills up, and they can create self-reinforcing loops for value-based agents. Penalizing them with negative reward was brittle in our DDQN experiments. Masking them out was the clean intervention: it removed uninformative transitions, made the action set state-dependent, and allowed learning to proceed.
+      </p>
+
+      <p>
+        The broader lesson is simple: when designing an RL environment, do not only ask what actions are syntactically allowed. Ask which actions are meaningful in the current state. If the environment knows an action cannot matter, the agent may not need to waste samples discovering that from scratch.
+      </p>
+
+      <hr>
+      <div class="citation" id="references">
+        <span style="font-size:16px">References:</span><br><br>
+        <a id="ref_1"></a>[1] H. van Hasselt, A. Guez, and D. Silver. <i>Deep Reinforcement Learning with Double Q-Learning</i>. AAAI, 2016.<br><br>
+        <a id="ref_2"></a>[2] T. Zahavy, M. Haroush, N. Merlis, D. J. Mankowitz, and S. Mannor. <i>Learn What Not to Learn: Action Elimination with Deep Reinforcement Learning</i>. arXiv, 2018.<br><br>
+      </div>
+    </div>
+    <div class="margin-right-block">
+      The blog framing matters: this is not “we solved 2048,” but “here is a clean RL pitfall and the fix that mattered.”
+    </div>
+  </div>
+
+</body>
+</html>

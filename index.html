@@ -199,7 +199,7 @@
     </section>
 
     <section id="projects">
-      <h2>Selected Research Projects</h2>
+      <h2>Selected Research</h2>
 
       <div class="item">
         <h3>A Geometric View of Why Guidance Improves Diffusion Samples</h3>
@@ -216,9 +216,10 @@
 
         <p>
           <a href="blogs/guidance_geometry/index.html">Read the blog post</a>
-          · Paper coming soon
+             · Paper in progress
         </p>
       </div>
+
       <div class="item">
           <h3>Implicit Augmentation from Distributional Symmetry in Turbulence Super-Resolution</h3>
           <div class="meta"> NeurIPS Workshop paper · ML for physics, turbulence, equivariance, super-resolution</div>
@@ -235,7 +236,10 @@
             <a href="https://arxiv.org/abs/2509.20683">arXiv</a>
           </p>
         </div>
+    </section>
 
+    <section id="research-notes">
+      <h2>Research Notes / Blog Posts</h2>
 
      <div class="item">
     <h3>Mixing Is Not Meaning: Evaluating Soft-Token Reasoning in LLMs</h3>
@@ -245,24 +249,41 @@
       mixtures of token embeddings. We found that pretrained models often collapse these
       mixtures to their dominant discrete component, suggesting that naive embedding
       interpolation does not preserve distributional meaning. We introduced diagnostic
-      probes for soft-token understanding and explored LoRA fine-tuning objectives that
-      encourage models to better preserve mixture semantics.
+      probes for soft-token understanding and explored preliminary soft-token fine-tuning objectives.
       </p>
         <p>
           <a href="blogs/mixing_is_not_meaning/index.html">Read the blog post</a>
         </p>
     </div>
+
+    <div class="item">
+      <h3>Actions That Do Nothing: A Small Pitfall in Reinforcement Learning</h3>
+      <div class="meta">Blog post · Reinforcement learning, action masking, 2048</div>
+      <p>
+        A short case study from training reinforcement learning agents for 2048. The main lesson is that
+        actions that leave the state unchanged can create surprisingly bad learning dynamics, especially
+        for value-based methods. I discuss why simple reward penalties may not be enough, how action
+        masking helps, and how this connects to invalid-action masking and action-elimination ideas in
+        reinforcement learning.
+      </p>
+      <p>
+        <p>
+          <a href="blogs/stationary_actions/index.html">Read the blog post</a>
+        </p>
+            </p>
+    </div>
+    </section>
+
+    <section id="course-projects">
+      <h2>Course Projects</h2>
    
     <div class="item">
       <h3>Encrypt What Matters: ROI-Guided FHE for CNN Inference</h3>
       <div class="meta">Research project · FHE, privacy-preserving ML, efficient encrypted inference</div>
       <p>
-        Developed a region-of-interest encryption scheme for CNN inference under fully
-        homomorphic encryption. Instead of encrypting the full input, the method encrypts
-        only privacy-sensitive regions and partially evaluates the remaining plaintext
-        computation. By formalizing propagation of sensitivity through convolutional
-        layers, we showed that CNN locality can substantially reduce encrypted circuit size
-        and inference cost.
+          Course project for MIT 6.5610 on privacy-preserving ML inference.
+          We explored a region-of-interest approach to fully homomorphic encrypted CNN inference,
+           encrypting only sensitive input regions and using CNN locality to reduce encrypted computation. 
       </p>
       <p>
         <a href="cryptography_paper.pdf">Course project PDF</a>
