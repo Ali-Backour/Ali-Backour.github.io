@@ -1,189 +1,32 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>A Geometric View of Why Guidance Improves Diffusion Samples</title>
   <meta property="og:title" content="A Geometric View of Why Guidance Improves Diffusion Samples" />
-  <style type="text/css">
-    body {
-      background-color: #f5f9ff;
-      margin: 0;
-      color: #1f2933;
-      line-height: 1.55;
-    }
-    .content-margin-container {
-      display: flex;
-      width: 100%;
-      justify-content: left;
-      align-items: flex-start;
-    }
-    .main-content-block {
-      width: 70%;
-      max-width: 1100px;
-      background-color: #fff;
-      border-left: 1px solid #DDD;
-      border-right: 1px solid #DDD;
-      padding: 18px 24px 18px 24px;
-      font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
-      box-sizing: border-box;
-    }
-    .margin-left-block {
-      font-size: 14px;
-      width: 15%;
-      max-width: 150px;
-      position: relative;
-      margin-left: 10px;
-      text-align: left;
-      font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
-      padding: 5px;
-      box-sizing: border-box;
-    }
-    .margin-right-block {
-      font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
-      font-size: 14px;
-      width: 25%;
-      max-width: 285px;
-      position: relative;
-      text-align: left;
-      padding: 14px;
-      color: #52616b;
-      box-sizing: border-box;
-    }
-    img {
-      max-width: 100%;
-      height: auto;
-      display: block;
-      margin: auto;
-    }
-    a:link, a:visited { color: #0e7862; text-decoration: none; }
-    a:hover { color: #24b597; }
-    h1 {
-      font-size: 22px;
-      margin-top: 10px;
-      margin-bottom: 8px;
-      font-family: "Courier New", Courier, monospace;
-      color: #0f172a;
-    }
-    h2 {
-      font-size: 17px;
-      margin-top: 14px;
-      margin-bottom: 4px;
-      color: #0f172a;
-    }
-    p { margin: 0.55em 0; }
-    table.header {
-      font-weight: 300;
-      font-size: 17px;
-      width: 100%;
-    }
-    table td, table td * { vertical-align: middle; position: relative; }
-    hr {
-      height: 1px;
-      border: none;
-      background-color: #DDD;
-      margin: 20px 0;
-    }
-    div.hypothesis {
-      width: 84%;
-      background-color: #f1f5f9;
-      border: 1px solid #94a3b8;
-      border-radius: 10px;
-      font-family: "Courier New", Courier, monospace;
-      font-size: 18px;
-      text-align: center;
-      margin: 18px auto;
-      padding: 16px;
-    }
-.equation {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  padding: 14px 12px;
-  margin: 12px auto;
-  text-align: center;
-  overflow-x: auto;
-  color: #0f172a;
-  font-size: 20px;
-}
-
-.equation math {
-  font-family: serif;
-}
-    .image-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      align-items: start;
-    }
-    .image-row.two { grid-template-columns: repeat(2, 1fr); }
-    .panel-label {
-      text-align: center;
-      font-size: 13px;
-      color: #52616b;
-      margin-top: 4px;
-    }
-    .small-table {
-      border-collapse: collapse;
-      width: 100%;
-      font-size: 14px;
-      margin: 12px 0;
-    }
-    .small-table th, .small-table td {
-      border-bottom: 1px solid #e2e8f0;
-      padding: 6px 8px;
-      text-align: right;
-    }
-    .small-table th:first-child, .small-table td:first-child { text-align: left; }
-    .citation {
-      font-size: 0.9em;
-      background-color: #fff;
-      padding: 10px 0;
-      height: auto;
-    }
-    .toc {
-      position: fixed;
-      max-width: inherit;
-      top: max(20%, 120px);
-    }
-    .toc a { font-size: 13px; }
-    .takeaway {
-      border-left: 4px solid #0e7862;
-      background: #f8fafc;
-      padding: 10px 14px;
-      margin: 14px 0;
-      color: #334155;
-    }
-    @media (max-width: 900px) {
-      .content-margin-container { display: block; }
-      .main-content-block { width: 100%; border-left: none; border-right: none; }
-      .margin-left-block, .margin-right-block { display: none; }
-      .image-row, .image-row.two { grid-template-columns: 1fr; }
-    }
-  </style>
+  <link rel="stylesheet" href="../../assets/css/blog.css">
 </head>
 <body>
 
-  <div class="content-margin-container">
+  <div class="content-margin-container post-header">
     <div class="margin-left-block"></div>
     <div class="main-content-block">
-      <table class="header" align="left">
-        <tr>
-          <td colspan="4">
-            <span style="font-size: 32px; font-family: 'Courier New', Courier, monospace;">A Geometric View of Why Guidance Improves Diffusion Samples</span>
-          </td>
-        </tr>
-        <tr>
-          <td align="left"><span style="font-size:17px"><a href="https://ali-backour.github.io/">Ali Backour</a></span></td>
-          <tr>
-            <td align="left">
-              <span style="font-size:14px; color:#52616b;">May 2026 · Exploratory research note</span>
-            </td>
-          </tr>
-        </tr>
-        <tr>
-        </tr>
-      </table>
+      <h1 class="post-title">A Geometric View of Why Guidance Improves Diffusion Samples</h1>
+      <div class="byline">
+        <div class="byline-item">
+          <span class="byline-label">Author</span>
+          <a href="https://ali-backour.github.io/">Ali Backour</a>
+        </div>
+        <div class="byline-item">
+          <span class="byline-label">Published</span>
+          May 2026
+        </div>
+        <div class="byline-item">
+          <span class="byline-label">Kind</span>
+          Exploratory research note
+        </div>
+      </div>
     </div>
     <div class="margin-right-block"></div>
   </div>
@@ -191,14 +34,14 @@
   <div class="content-margin-container" id="intro">
     <div class="margin-left-block">
       <div class="toc">
-        <b style="font-size:16px">Outline</b><br><br>
-        <a href="#intro">The puzzle</a><br><br>
-        <a href="#related">Related work</a><br><br>
-        <a href="#catenoid">A toy world</a><br><br>
-        <a href="#score">Why geometry matters</a><br><br>
-        <a href="#images">Real images</a><br><br>
-        <a href="#controls">Artifact controls</a><br><br>
-        <a href="#limits">Limitations</a><br><br>
+        <div class="toc-title">Outline</div>
+        <a href="#intro">The puzzle</a>
+        <a href="#related">Related work</a>
+        <a href="#catenoid">A toy world</a>
+        <a href="#score">Why geometry matters</a>
+        <a href="#images">Real images</a>
+        <a href="#controls">Artifact controls</a>
+        <a href="#limits">Limitations</a>
       </div>
     </div>
 <div id="fig-catenoid-guidance" class="main-content-block">
@@ -614,7 +457,7 @@ Overall, these results suggest that guidance does more than improve prompt align
 
 <hr>
       <div class="citation" id="references">
-        <span style="font-size:16px">References:</span><br><br>
+        <span class="references-title">References</span><br><br>
         <a id="ref_1"></a>[1] P. Dhariwal and A. Q. Nichol. <i>Diffusion Models Beat GANs on Image Synthesis</i>. NeurIPS, 2021.<br><br>
         <a id="ref_2"></a>[2] J. Ho and T. Salimans. <i>Classifier-Free Diffusion Guidance</i>. NeurIPS Workshop, 2021.<br><br>
         <a id="ref_3"></a>[3] R. Rombach, A. Blattmann, D. Lorenz, P. Esser, and B. Ommer. <i>High-Resolution Image Synthesis with Latent Diffusion Models</i>. CVPR, 2022.<br><br>

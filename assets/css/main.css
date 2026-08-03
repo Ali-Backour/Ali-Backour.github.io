@@ -1,0 +1,242 @@
+/* ==========================================================================
+   main.css — homepage stylesheet
+   Style: classic academic homepage (Jon Barron-style): a single centered
+   column, photo on the right, publication rows with thumbnails.
+   ========================================================================== */
+
+:root {
+  --text: #333333;
+  --muted: #666666;
+  --link: #1772d0;
+  --border: #dddddd;
+  --thumb-bg: #f4f4f4;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: #ffffff;
+  color: var(--text);
+  font-family: "Lato", Verdana, Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 56px 24px 72px;
+}
+
+a {
+  color: var(--link);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* --------------------------------------------------------------------------
+   Header: name + bio on the left, portrait on the right
+   -------------------------------------------------------------------------- */
+
+.site-header {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.site-header .intro {
+  flex: 1;
+}
+
+h1.name {
+  font-size: 34px;
+  font-weight: 400;
+  margin: 0 0 4px;
+  line-height: 1.2;
+}
+
+.tagline {
+  color: var(--muted);
+  margin: 0 0 14px;
+  font-size: 16px;
+}
+
+.profile-photo {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: var(--thumb-bg);
+}
+
+.header-links {
+  margin-top: 12px;
+  font-size: 15px;
+}
+
+.header-links a + a::before {
+  content: "\00a0/\00a0\00a0";
+  color: var(--muted);
+}
+
+/* --------------------------------------------------------------------------
+   Sections
+   -------------------------------------------------------------------------- */
+
+section {
+  margin-bottom: 8px;
+}
+
+h2 {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 36px 0 14px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+}
+
+.interests {
+  padding-left: 22px;
+  margin: 0;
+}
+
+.interests li {
+  margin-bottom: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   Publication / project rows: thumbnail on the left, text on the right
+   -------------------------------------------------------------------------- */
+
+.pub-row {
+  display: flex;
+  gap: 26px;
+  align-items: flex-start;
+  padding: 16px 0;
+}
+
+.pub-row + .pub-row {
+  border-top: 1px solid #eeeeee;
+}
+
+.pub-thumb {
+  width: 170px;
+  flex-shrink: 0;
+}
+
+.pub-thumb img {
+  width: 100%;
+  height: 118px;
+  object-fit: cover;
+  border-radius: 6px;
+  background: var(--thumb-bg);
+  border: 1px solid var(--border);
+}
+
+.pub-thumb .placeholder {
+  width: 100%;
+  height: 118px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: linear-gradient(135deg, #f7f9fc 0%, #e8eef5 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9aa8b8;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pub-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.pub-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 2px;
+}
+
+.pub-title a {
+  color: var(--link);
+}
+
+.pub-venue {
+  font-style: italic;
+  color: var(--muted);
+  font-size: 14px;
+  margin: 0 0 6px;
+}
+
+.pub-text p {
+  margin: 0 0 6px;
+}
+
+.pub-links {
+  font-size: 14px;
+}
+
+.pub-links a + a::before {
+  content: "\00a0/\00a0\00a0";
+  color: var(--muted);
+}
+
+.pub-note {
+  color: var(--muted);
+}
+
+/* --------------------------------------------------------------------------
+   Footer
+   -------------------------------------------------------------------------- */
+
+footer {
+  margin-top: 48px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* --------------------------------------------------------------------------
+   Mobile
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 680px) {
+  .site-header {
+    flex-direction: column-reverse;
+    gap: 20px;
+  }
+
+  .profile-photo {
+    width: 140px;
+    height: 140px;
+  }
+
+  h1.name {
+    font-size: 28px;
+  }
+
+  .pub-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .pub-thumb {
+    width: 100%;
+    max-width: 280px;
+  }
+}

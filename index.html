@@ -4,192 +4,62 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="google-site-verification" content="google28c472b48b6f00d3.html" />
+  <meta name="description" content="Ali Backour — Math and Computer Science student at MIT. Machine learning research on generative models, geometry, information theory, and large language models." />
+
   <!-- Google tag (gtag.js) -->
-  <!-- Replace G-XXXXXXXXXX with your Google Analytics Measurement ID -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q3FC6B8B9L"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
     gtag('config', 'G-Q3FC6B8B9L');
   </script>
+
   <title>Ali Backour</title>
-  <style>
-    :root {
-      --bg: #fafafa;
-      --text: #222;
-      --muted: #666;
-      --link: #1f5fbf;
-      --card: #ffffff;
-      --border: #e5e5e5;
-    }
 
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-    }
-
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 48px 24px 80px;
-    }
-
-    header {
-      display: flex;
-      gap: 32px;
-      align-items: center;
-      margin-bottom: 48px;
-    }
-
-    .profile-photo {
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      object-fit: cover;
-      background: #ddd;
-      border: 1px solid var(--border);
-      flex-shrink: 0;
-    }
-
-    h1 {
-      font-size: 2.4rem;
-      margin: 0 0 8px;
-      line-height: 1.15;
-    }
-
-    .subtitle {
-      font-size: 1.1rem;
-      color: var(--muted);
-      margin-bottom: 16px;
-    }
-
-    .links a {
-      margin-right: 14px;
-      color: var(--link);
-      text-decoration: none;
-      font-weight: 500;
-    }
-
-    .links a:hover {
-      text-decoration: underline;
-    }
-
-    section {
-      margin-bottom: 42px;
-    }
-
-    h2 {
-      font-size: 1.35rem;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 6px;
-      margin-bottom: 18px;
-    }
-
-    .item {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 18px 20px;
-      margin-bottom: 14px;
-    }
-
-    .item h3 {
-      margin: 0 0 6px;
-      font-size: 1.05rem;
-    }
-
-    .meta {
-      color: var(--muted);
-      font-size: 0.95rem;
-      margin-bottom: 8px;
-    }
-
-    ul {
-      padding-left: 22px;
-    }
-
-    footer {
-      margin-top: 56px;
-      padding-top: 20px;
-      border-top: 1px solid var(--border);
-      color: var(--muted);
-      font-size: 0.9rem;
-    }
-
-    @media (max-width: 650px) {
-      header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .profile-photo {
-        width: 120px;
-        height: 120px;
-      }
-
-      h1 {
-        font-size: 2rem;
-      }
-    }
-  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/main.css" />
 </head>
 <body>
   <main class="container">
-    <header>
-      <!-- Replace profile.jpg with your own image file, or remove this img tag. -->
-      <img src="profile.jpg" alt="Profile photo" class="profile-photo" />
-      <div>
-        <h1>Ali Backour</h1>
-        <div class="subtitle">
-          Math and Computer Science student at MIT · Machine Learning Researcher
-        </div>
+
+    <header class="site-header">
+      <div class="intro">
+        <h1 class="name">Ali Backour</h1>
+        <p class="tagline">Math and Computer Science student at MIT &middot; Machine Learning Researcher</p>
         <p>
-          I am interested in machine learning, generative models, geometry, information theory,
-          and the mathematical structure underlying modern AI systems.
+          I am a student at MIT studying mathematics and computer science. I am broadly
+          interested in understanding intelligence through mathematical, computational,
+          and philosophical lenses. My research interests include generative models,
+          representation learning, geometry for machine learning, information theory,
+          and the behavior and limitations of large language models.
         </p>
-        <div class="links">
+        <p>
+          I am especially drawn to questions where empirical behavior in modern ML systems
+          points toward a deeper mathematical structure: Why does guidance improve diffusion
+          models? What does the geometry of an image or representation space mean? How should
+          we evaluate whether language models are genuinely reasoning, exploring, or merely
+          following familiar patterns? I like projects that begin with a concrete anomaly or
+          surprising experiment and develop into a more principled explanation.
+        </p>
+        <p>
+          Outside of research, I enjoy running, biking and playing ice hockey.
+        </p>
+        <div class="header-links">
           <a href="mailto:abackour@mit.edu">Email</a>
           <a href="https://github.com/Ali-Backour">GitHub</a>
-          <a href="https://scholar.google.com/citations?user=QkDfp_foEjUC&hl=en">Google Scholar</a>
+          <a href="https://scholar.google.com/citations?user=QkDfp_foEjUC&amp;hl=en">Google Scholar</a>
           <a href="resume.pdf">Resume</a>
         </div>
       </div>
+      <img src="profile.jpg" alt="Portrait of Ali Backour" class="profile-photo" />
     </header>
 
-    <section id="about">
-      <h2>About</h2>
-      <p>
-        I am a student at MIT studying mathematics and computer science. I am broadly
-        interested in understanding intelligence through mathematical, computational,
-        and philosophical lenses. My research interests include generative models,
-        representation learning, geometry for machine learning, information theory,
-        and the behavior and limitations of large language models.
-      </p>
-      <p>
-        I am especially drawn to questions where empirical behavior in modern ML systems
-        points toward a deeper mathematical structure: Why does guidance improve diffusion
-        models? What does the geometry of an image or representation space mean? How should
-        we evaluate whether language models are genuinely reasoning, exploring, or merely
-        following familiar patterns? I like projects that begin with a concrete anomaly or
-        surprising experiment and develop into a more principled explanation.
-      </p>
-      <p>
-        Outside of research, I enjoy running, biking and playing ice hockey.
-      </p>
-    </section>
-
-    <section id="research">
+    <section id="research-interests">
       <h2>Research Interests</h2>
-      <ul>
+      <ul class="interests">
         <li>Generative models and diffusion models</li>
         <li>Geometry of data manifolds and representation spaces</li>
         <li>Information theory for machine learning</li>
@@ -198,31 +68,42 @@
       </ul>
     </section>
 
-    <section id="projects">
+    <section id="research">
       <h2>Selected Research</h2>
 
-      <div class="item">
-        <h3>A Geometric View of Why Guidance Improves Diffusion Samples</h3>
-        <div class="meta">Research project · Generative modeling, geometry, diffusion models</div>
-
-        <p>
-          Developing a geometric explanation for why classifier-free guidance improves diffusion
-          samples. The central idea is that unguided diffusion may favor smoother, easier-to-model
-          regions of the data distribution, while underrepresenting high-curvature or boundary-like
-          regions where the score field varies more rapidly. I study this effect on controlled
-          manifolds such as the catenoid and test whether guided image samples move toward
-          higher-curvature regions in stable and DINO representation spaces.
-        </p>
-
-        <p>
-          <a href="blogs/guidance_geometry/index.html">Read the blog post</a>
-             · Paper in progress
-        </p>
+      <div class="pub-row">
+        <div class="pub-thumb">
+          <a href="blogs/guidance_geometry/index.html">
+            <img src="blogs/guidance_geometry/images/catenoid_ground_truth.png" alt="Catenoid manifold samples" />
+          </a>
+        </div>
+        <div class="pub-text">
+          <p class="pub-title"><a href="blogs/guidance_geometry/index.html">A Geometric View of Why Guidance Improves Diffusion Samples</a></p>
+          <p class="pub-venue">Research project &middot; Generative modeling, geometry, diffusion models</p>
+          <p>
+            Developing a geometric explanation for why classifier-free guidance improves diffusion
+            samples. The central idea is that unguided diffusion may favor smoother, easier-to-model
+            regions of the data distribution, while underrepresenting high-curvature or boundary-like
+            regions where the score field varies more rapidly. I study this effect on controlled
+            manifolds such as the catenoid and test whether guided image samples move toward
+            higher-curvature regions in stable and DINO representation spaces.
+          </p>
+          <p class="pub-links">
+            <a href="blogs/guidance_geometry/index.html">Blog post</a>
+            <span class="pub-note">&nbsp;/&nbsp;&nbsp;Paper in progress</span>
+          </p>
+        </div>
       </div>
 
-      <div class="item">
-          <h3>Implicit Augmentation from Distributional Symmetry in Turbulence Super-Resolution</h3>
-          <div class="meta"> NeurIPS Workshop paper · ML for physics, turbulence, equivariance, super-resolution</div>
+      <div class="pub-row">
+        <div class="pub-thumb">
+          <a href="https://arxiv.org/abs/2509.20683">
+            <span class="placeholder">arXiv</span>
+          </a>
+        </div>
+        <div class="pub-text">
+          <p class="pub-title"><a href="https://arxiv.org/abs/2509.20683">Implicit Augmentation from Distributional Symmetry in Turbulence Super-Resolution</a></p>
+          <p class="pub-venue">NeurIPS Workshop paper &middot; ML for physics, turbulence, equivariance, super-resolution</p>
           <p>
             Studied whether convolutional neural networks can acquire rotational equivariance
             implicitly from turbulence data, without explicit rotation augmentation or
@@ -232,77 +113,99 @@
             anisotropic boundary layers, and increasing temporal or spatial sampling further
             improves equivariance.
           </p>
-          <p>
+          <p class="pub-links">
             <a href="https://arxiv.org/abs/2509.20683">arXiv</a>
           </p>
         </div>
+      </div>
     </section>
 
     <section id="research-notes">
       <h2>Research Notes / Blog Posts</h2>
 
-     <div class="item">
-    <h3>Mixing Is Not Meaning: Evaluating Soft-Token Reasoning in LLMs</h3>
-    <div class="meta">Research project · Language models, representation learning, continuous reasoning</div>
-    <p>
-      Studied whether language models can meaningfully interpret soft tokens formed as
-      mixtures of token embeddings. We found that pretrained models often collapse these
-      mixtures to their dominant discrete component, suggesting that naive embedding
-      interpolation does not preserve distributional meaning. We introduced diagnostic
-      probes for soft-token understanding and explored preliminary soft-token fine-tuning objectives.
-      </p>
-        <p>
-          <a href="blogs/mixing_is_not_meaning/index.html">Read the blog post</a>
-        </p>
-    </div>
+      <div class="pub-row">
+        <div class="pub-thumb">
+          <a href="blogs/mixing_is_not_meaning/index.html">
+            <img src="blogs/mixing_is_not_meaning/assets/p5_img1.png" alt="Soft-token probe results" />
+          </a>
+        </div>
+        <div class="pub-text">
+          <p class="pub-title"><a href="blogs/mixing_is_not_meaning/index.html">Mixing Is Not Meaning: Evaluating Soft-Token Reasoning in LLMs</a></p>
+          <p class="pub-venue">Research project &middot; Language models, representation learning, continuous reasoning</p>
+          <p>
+            Studied whether language models can meaningfully interpret soft tokens formed as
+            mixtures of token embeddings. We found that pretrained models often collapse these
+            mixtures to their dominant discrete component, suggesting that naive embedding
+            interpolation does not preserve distributional meaning. We introduced diagnostic
+            probes for soft-token understanding and explored preliminary soft-token fine-tuning objectives.
+          </p>
+          <p class="pub-links">
+            <a href="blogs/mixing_is_not_meaning/index.html">Blog post</a>
+          </p>
+        </div>
+      </div>
 
-    <div class="item">
-      <h3>Actions That Do Nothing: A Small Pitfall in Reinforcement Learning</h3>
-      <div class="meta">Blog post · Reinforcement learning, action masking, 2048</div>
-      <p>
-        A short case study from training reinforcement learning agents for 2048. The main lesson is that
-        actions that leave the state unchanged can create surprisingly bad learning dynamics, especially
-        for value-based methods. I discuss why simple reward penalties may not be enough, how action
-        masking helps, and how this connects to invalid-action masking and action-elimination ideas in
-        reinforcement learning.
-      </p>
-      <p>
-        <p>
-          <a href="blogs/stationary_actions/index.html">Read the blog post</a>
-        </p>
-            </p>
-    </div>
+      <div class="pub-row">
+        <div class="pub-thumb">
+          <a href="blogs/stationary_actions/index.html">
+            <img src="blogs/stationary_actions/images/p1_img1.png" alt="2048 game board" />
+          </a>
+        </div>
+        <div class="pub-text">
+          <p class="pub-title"><a href="blogs/stationary_actions/index.html">Actions That Do Nothing: A Small Pitfall in Reinforcement Learning</a></p>
+          <p class="pub-venue">Blog post &middot; Reinforcement learning, action masking, 2048</p>
+          <p>
+            A short case study from training reinforcement learning agents for 2048. The main lesson is that
+            actions that leave the state unchanged can create surprisingly bad learning dynamics, especially
+            for value-based methods. I discuss why simple reward penalties may not be enough, how action
+            masking helps, and how this connects to invalid-action masking and action-elimination ideas in
+            reinforcement learning.
+          </p>
+          <p class="pub-links">
+            <a href="blogs/stationary_actions/index.html">Blog post</a>
+          </p>
+        </div>
+      </div>
     </section>
 
     <section id="course-projects">
       <h2>Course Projects</h2>
-   
-    <div class="item">
-      <h3>Encrypt What Matters: ROI-Guided FHE for CNN Inference</h3>
-      <div class="meta">Research project · FHE, privacy-preserving ML, efficient encrypted inference</div>
-      <p>
-          Course project for MIT 6.5610 on privacy-preserving ML inference.
-          We explored a region-of-interest approach to fully homomorphic encrypted CNN inference,
-           encrypting only sensitive input regions and using CNN locality to reduce encrypted computation. 
-      </p>
-      <p>
-        <a href="cryptography_paper.pdf">Course project PDF</a>
-      </p>
-    </div>
+
+      <div class="pub-row">
+        <div class="pub-thumb">
+          <a href="cryptography_paper.pdf">
+            <span class="placeholder">PDF</span>
+          </a>
+        </div>
+        <div class="pub-text">
+          <p class="pub-title"><a href="cryptography_paper.pdf">Encrypt What Matters: ROI-Guided FHE for CNN Inference</a></p>
+          <p class="pub-venue">Research project &middot; FHE, privacy-preserving ML, efficient encrypted inference</p>
+          <p>
+            Course project for MIT 6.5610 on privacy-preserving ML inference.
+            We explored a region-of-interest approach to fully homomorphic encrypted CNN inference,
+            encrypting only sensitive input regions and using CNN locality to reduce encrypted computation.
+          </p>
+          <p class="pub-links">
+            <a href="cryptography_paper.pdf">Course project PDF</a>
+          </p>
+        </div>
+      </div>
     </section>
 
-    <section id="publications">
+    <section id="writing">
       <h2>Writing</h2>
-      <div class="item">
-        <h3>Coming soon</h3>
-        <p>
-          I am currently preparing blog posts on geometry for ML, information theory for ML,
-          and the role of divergences as learning objectives.
-        </p>
-        <p>
-        I will be a teaching assistant for Reinforcement Learning (6.7920), and I am
-        writing course notes to make the material more structured and accessible.
-      </p>
+      <div class="pub-row">
+        <div class="pub-text">
+          <p class="pub-title">Coming soon</p>
+          <p>
+            I am currently preparing blog posts on geometry for ML, information theory for ML,
+            and the role of divergences as learning objectives.
+          </p>
+          <p>
+            I will be a teaching assistant for Reinforcement Learning (6.7920), and I am
+            writing course notes to make the material more structured and accessible.
+          </p>
+        </div>
       </div>
     </section>
 
@@ -315,7 +218,7 @@
     </section>
 
     <footer>
-      Last updated: May 2026.
+      Last updated: August 2026.
     </footer>
   </main>
 </body>
