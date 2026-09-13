@@ -51,7 +51,6 @@
           <a href="mailto:abackour@mit.edu">Email</a>
           <a href="https://github.com/Ali-Backour">GitHub</a>
           <a href="https://scholar.google.com/citations?user=QkDfp_foEjUC&amp;hl=en">Google Scholar</a>
-          <a href="resume.pdf">Resume</a>
         </div>
       </div>
       <img src="profile.jpg" alt="Portrait of Ali Backour" class="profile-photo" />
@@ -69,7 +68,7 @@
     </section>
 
     <section id="research">
-      <h2>Selected Research</h2>
+      <h2>Current Research</h2>
 
       <div class="pub-row">
         <div class="pub-thumb">
@@ -94,16 +93,73 @@
           </p>
         </div>
       </div>
+    </section>
+
+    <section id="publications">
+      <h2>Selected Publications</h2>
+
+      <div class="pub-row">
+        <div class="pub-thumb">
+          <a href="https://arxiv.org/abs/2609.02049">
+            <img src="assets/img/mixture_collapse.png" alt="Three-way token mixtures on a simplex: a faithful mixture versus Qwen collapsing each mixture to one component" />
+          </a>
+        </div>
+        <div class="pub-text">
+          <p class="pub-title"><a href="https://arxiv.org/abs/2609.02049">The Dynamics of Continuous Mixture Collapse in Language Models</a></p>
+          <p class="pub-authors"><strong>Ali Backour</strong></p>
+          <p class="pub-venue">arXiv preprint, 2026 &middot; Language models, latent reasoning, dynamical systems</p>
+          <p>
+            Latent-state reasoning methods replace discrete intermediate tokens with continuous
+            states, such as mixtures of token embeddings, but pretrained language models often fail
+            to preserve these mixtures. I identify three distinct sources of failure. Transformer
+            architectures distort mixture geometry, and training amplifies this. Even with perfectly
+            linear transport, the softmax readout and autoregressive feedback form a dynamical system
+            that either amplifies small differences until one component dominates or contracts
+            mixtures until they become indistinguishable; the observed transition occurs near the
+            predicted threshold, and pretrained-model rollouts lie mostly on the amplifying side.
+            Finally, exact preservation of many-component mixtures generally requires a
+            context-dependent correction whose dimensionality can grow with the number of components.
+          </p>
+          <p class="pub-links">
+            <a href="https://arxiv.org/abs/2609.02049">arXiv</a>
+          </p>
+        </div>
+      </div>
+
+      <div class="pub-row">
+        <div class="pub-thumb">
+          <a href="https://arxiv.org/abs/2609.09357">
+            <img src="assets/img/selective_fhe.png" alt="Tainted fraction of activations across conv and pool stages for AlexNet, ResNet-18, and VGG-11" />
+          </a>
+        </div>
+        <div class="pub-text">
+          <p class="pub-title"><a href="https://arxiv.org/abs/2609.09357">Encrypt What Matters: When Selective Homomorphic Inference Is Efficient</a></p>
+          <p class="pub-authors"><strong>Ali Backour</strong>, Juan Reyes, Jaime Punyed, Ana Onoprishvili</p>
+          <p class="pub-venue">arXiv preprint, 2026 &middot; Homomorphic encryption, privacy-preserving ML</p>
+          <p>
+            Studied selective homomorphic inference, where only a sensitive region of interest is
+            encrypted under FHE and computations independent of it run in plaintext. This produces
+            the same output as full FHE on the same model, without retraining, and its efficiency
+            depends on how quickly encrypted dependencies spread through the network. For small
+            encrypted regions, locality-preserving architectures achieve order-of-magnitude speedups,
+            while architectures with early global mixing gain essentially nothing.
+          </p>
+          <p class="pub-links">
+            <a href="https://arxiv.org/abs/2609.09357">arXiv</a>
+          </p>
+        </div>
+      </div>
 
       <div class="pub-row">
         <div class="pub-thumb">
           <a href="https://arxiv.org/abs/2509.20683">
-            <span class="placeholder">arXiv</span>
+            <img src="assets/img/turbulence_equivariance.png" alt="Turbulent channel flow with mid-plane and boundary subdomains super-resolved from 16³ to 64³" />
           </a>
         </div>
         <div class="pub-text">
           <p class="pub-title"><a href="https://arxiv.org/abs/2509.20683">Implicit Augmentation from Distributional Symmetry in Turbulence Super-Resolution</a></p>
-          <p class="pub-venue">NeurIPS Workshop paper &middot; ML for physics, turbulence, equivariance, super-resolution</p>
+          <p class="pub-authors">Julia Balla, Jeremiah Bailey, <strong>Ali Backour</strong>, Elyssa Hofgard, Tommi Jaakkola, Tess Smidt, Ryley McConkey</p>
+          <p class="pub-venue">NeurIPS 2025 Workshop on Machine Learning and the Physical Sciences &middot; ML for physics, turbulence, equivariance</p>
           <p>
             Studied whether convolutional neural networks can acquire rotational equivariance
             implicitly from turbulence data, without explicit rotation augmentation or
@@ -120,95 +176,6 @@
       </div>
     </section>
 
-    <section id="research-notes">
-      <h2>Research Notes / Blog Posts</h2>
-
-      <div class="pub-row">
-        <div class="pub-thumb">
-          <a href="blogs/mixing_is_not_meaning/index.html">
-            <img src="blogs/mixing_is_not_meaning/assets/p5_img1.png" alt="Soft-token probe results" />
-          </a>
-        </div>
-        <div class="pub-text">
-          <p class="pub-title"><a href="blogs/mixing_is_not_meaning/index.html">Mixing Is Not Meaning: Evaluating Soft-Token Reasoning in LLMs</a></p>
-          <p class="pub-venue">Research project &middot; Language models, representation learning, continuous reasoning</p>
-          <p>
-            Studied whether language models can meaningfully interpret soft tokens formed as
-            mixtures of token embeddings. We found that pretrained models often collapse these
-            mixtures to their dominant discrete component, suggesting that naive embedding
-            interpolation does not preserve distributional meaning. We introduced diagnostic
-            probes for soft-token understanding and explored preliminary soft-token fine-tuning objectives.
-          </p>
-          <p class="pub-links">
-            <a href="blogs/mixing_is_not_meaning/index.html">Blog post</a>
-          </p>
-        </div>
-      </div>
-
-      <div class="pub-row">
-        <div class="pub-thumb">
-          <a href="blogs/stationary_actions/index.html">
-            <img src="blogs/stationary_actions/images/p1_img1.png" alt="2048 game board" />
-          </a>
-        </div>
-        <div class="pub-text">
-          <p class="pub-title"><a href="blogs/stationary_actions/index.html">Actions That Do Nothing: A Small Pitfall in Reinforcement Learning</a></p>
-          <p class="pub-venue">Blog post &middot; Reinforcement learning, action masking, 2048</p>
-          <p>
-            A short case study from training reinforcement learning agents for 2048. The main lesson is that
-            actions that leave the state unchanged can create surprisingly bad learning dynamics, especially
-            for value-based methods. I discuss why simple reward penalties may not be enough, how action
-            masking helps, and how this connects to invalid-action masking and action-elimination ideas in
-            reinforcement learning.
-          </p>
-          <p class="pub-links">
-            <a href="blogs/stationary_actions/index.html">Blog post</a>
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <section id="course-projects">
-      <h2>Course Projects</h2>
-
-      <div class="pub-row">
-        <div class="pub-thumb">
-          <a href="cryptography_paper.pdf">
-            <span class="placeholder">PDF</span>
-          </a>
-        </div>
-        <div class="pub-text">
-          <p class="pub-title"><a href="cryptography_paper.pdf">Encrypt What Matters: ROI-Guided FHE for CNN Inference</a></p>
-          <p class="pub-venue">Research project &middot; FHE, privacy-preserving ML, efficient encrypted inference</p>
-          <p>
-            Course project for MIT 6.5610 on privacy-preserving ML inference.
-            We explored a region-of-interest approach to fully homomorphic encrypted CNN inference,
-            encrypting only sensitive input regions and using CNN locality to reduce encrypted computation.
-          </p>
-          <p class="pub-links">
-            <a href="cryptography_paper.pdf">Course project PDF</a>
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <section id="writing">
-      <h2>Writing</h2>
-      <div class="pub-row">
-        <div class="pub-text">
-          <p class="pub-title">Coming soon</p>
-          <p>
-            I am currently preparing blog posts on geometry for ML, information theory for ML,
-            and the role of divergences as learning objectives.
-          </p>
-          <p>
-            I will be a teaching assistant for Reinforcement Learning (6.7920), and I am
-            writing course notes to make the material more structured and accessible.
-          </p>
-        </div>
-      </div>
-    </section>
-
     <section id="contact">
       <h2>Contact</h2>
       <p>
@@ -218,7 +185,7 @@
     </section>
 
     <footer>
-      Last updated: August 2026.
+      Last updated: September 2026.
     </footer>
   </main>
 </body>

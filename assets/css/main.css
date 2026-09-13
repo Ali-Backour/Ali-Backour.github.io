@@ -175,6 +175,10 @@ h2 {
   color: var(--link);
 }
 
+.pub-authors {
+  font-size: 14px;
+}
+
 .pub-venue {
   font-style: italic;
   color: var(--muted);
@@ -238,5 +242,11 @@ footer {
   .pub-thumb {
     width: 100%;
     max-width: 280px;
+  }
+
+  /* keep the desktop 170:118 shape so figures aren't cropped when widened */
+  .pub-thumb img {
+    height: auto;
+    aspect-ratio: 170 / 118;
   }
 }
