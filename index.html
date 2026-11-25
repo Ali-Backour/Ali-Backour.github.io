@@ -17,9 +17,12 @@
 
   <title>Ali Backour</title>
 
+  <!-- lets the stylesheet collapse long descriptions only when the "Read more" button can work -->
+  <script>document.documentElement.classList.add('js');</script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400;1,700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/main.css" />
 </head>
 <body>
@@ -35,24 +38,37 @@
           <a href="https://people.csail.mit.edu/tommi/">Tommi Jaakkola</a> and
           <a href="https://www.vincentsitzmann.com/">Vincent Sitzmann</a>. I am particularly interested
           in understanding the mathematical structure underlying the empirical behavior of generative
-          models and other modern machine learning systems. I am also a TA for
-          <a href="https://web.mit.edu/6.7920/www/">Reinforcement Learning (6.7920)</a>.
+          models and other modern machine learning systems. I am a TA for
+          <a href="https://web.mit.edu/6.7920/www/">Reinforcement Learning (6.7920)</a> this fall
+          and for
+          <a href="https://www.scenerepresentations.org/courses/2026/spring/advances-in-cv/">Advances in Computer Vision (6.8300)</a>
+          in Spring 2027.
         </p>
         <p>
           Outside of research, I enjoy running, biking, and playing ice hockey.
         </p>
         <div class="header-links">
-          <a href="mailto:abackour@mit.edu">Email</a>
-          <a href="https://github.com/Ali-Backour">GitHub</a>
-          <a href="https://scholar.google.com/citations?user=QkDfp_foEjUC&amp;hl=en">Google Scholar</a>
+          <a class="btn" href="mailto:abackour@mit.edu">Email</a>
+          <a class="btn" href="https://github.com/Ali-Backour">GitHub</a>
+          <a class="btn" href="https://scholar.google.com/citations?user=QkDfp_foEjUC&amp;hl=en">Google Scholar</a>
         </div>
       </div>
       <img src="profile.jpg" alt="Portrait of Ali Backour" class="profile-photo" />
     </header>
 
+    <aside class="announce">
+      <span class="badge">Teaching this IAP</span>
+      <p>
+        <a href="https://mit-deep-learning-alchemy.github.io/"><strong>6.S094: Deep Learning Alchemy</strong></a>,
+        a for-credit MIT class on the surprising empirical phenomena of deep learning and the
+        theories that try to explain them. January 4 to 29, 2027.
+      </p>
+      <a class="btn btn-primary" href="https://mit-deep-learning-alchemy.github.io/">Registration is open</a>
+    </aside>
+
     <section id="research-interests">
       <h2>Research Interests</h2>
-      <ul class="interests">
+      <ul class="chips">
         <li>Diffusion models</li>
         <li>Geometry of data manifolds and representation spaces</li>
         <li>Information theory for machine learning</li>
@@ -61,19 +77,21 @@
       </ul>
     </section>
 
+    <!-- Hidden for now: the Current Research section and its guidance-geometry blog entry.
+         To bring it back, delete this line and the closing marker below the section.
     <section id="research">
       <h2>Current Research</h2>
 
-      <div class="pub-row">
-        <div class="pub-thumb">
+      <article class="feature-card">
+        <div class="pub-media">
           <a href="blogs/guidance_geometry/index.html">
             <img src="blogs/guidance_geometry/images/catenoid_ground_truth.png" alt="Catenoid manifold samples" />
           </a>
         </div>
-        <div class="pub-text">
-          <p class="pub-title"><a href="blogs/guidance_geometry/index.html">A Geometric View of Why Guidance Improves Diffusion Samples</a></p>
-          <p class="pub-venue">Research project &middot; Generative modeling, geometry, diffusion models</p>
-          <p>
+        <div class="pub-body">
+          <p class="pub-venue">Research project</p>
+          <h3 class="pub-title"><a href="blogs/guidance_geometry/index.html">A Geometric View of Why Guidance Improves Diffusion Samples</a></h3>
+          <p class="pub-desc">
             Developing a geometric explanation for why classifier-free guidance improves diffusion
             samples. The central idea is that unguided diffusion may favor smoother, easier-to-model
             regions of the data distribution, while underrepresenting high-curvature or boundary-like
@@ -81,106 +99,294 @@
             manifolds such as the catenoid and test whether guided image samples move toward
             higher-curvature regions in stable and DINO representation spaces.
           </p>
-          <p class="pub-links">
-            <a href="blogs/guidance_geometry/index.html">Blog post</a>
-            <span class="pub-note">&nbsp;/&nbsp;&nbsp;Paper in progress</span>
-          </p>
+          <div class="pub-foot">
+            <ul class="pub-tags">
+              <li>Generative modeling</li>
+              <li>Geometry</li>
+              <li>Diffusion models</li>
+            </ul>
+            <p class="pub-links">
+              <a class="btn" href="blogs/guidance_geometry/index.html">Blog post</a>
+              <span class="pub-note">Paper in progress</span>
+            </p>
+          </div>
         </div>
-      </div>
+      </article>
     </section>
+    End of hidden Current Research section. -->
 
     <section id="publications">
       <h2>Selected Publications</h2>
 
-      <div class="pub-row">
-        <div class="pub-thumb">
-          <a href="https://arxiv.org/abs/2609.02049">
-            <img src="assets/img/mixture_collapse.png" alt="Three-way token mixtures on a simplex: a faithful mixture versus Qwen collapsing each mixture to one component" />
-          </a>
-        </div>
-        <div class="pub-text">
-          <p class="pub-title"><a href="https://arxiv.org/abs/2609.02049">The Dynamics of Continuous Mixture Collapse in Language Models</a></p>
-          <p class="pub-authors"><strong>Ali Backour</strong></p>
-          <p class="pub-venue">NeurIPS 2026 Workshop on Interpretability as a Science &middot; Language models, latent reasoning, dynamical systems</p>
-          <p>
-            Latent-state reasoning methods replace discrete intermediate tokens with continuous
-            states, such as mixtures of token embeddings, but pretrained language models often fail
-            to preserve these mixtures. I identify three distinct sources of failure. Transformer
-            architectures distort mixture geometry, and training amplifies this. Even with perfectly
-            linear transport, the softmax readout and autoregressive feedback form a dynamical system
-            that either amplifies small differences until one component dominates or contracts
-            mixtures until they become indistinguishable; the observed transition occurs near the
-            predicted threshold, and pretrained-model rollouts lie mostly on the amplifying side.
-            Finally, exact preservation of many-component mixtures generally requires a
-            context-dependent correction whose dimensionality can grow with the number of components.
-          </p>
-          <p class="pub-links">
-            <a href="https://arxiv.org/abs/2609.02049">arXiv</a>
-          </p>
-        </div>
-      </div>
+      <div class="pub-grid">
 
-      <div class="pub-row">
-        <div class="pub-thumb">
-          <a href="https://arxiv.org/abs/2609.09357">
-            <img src="assets/img/selective_fhe.png" alt="Tainted fraction of activations across conv and pool stages for AlexNet, ResNet-18, and VGG-11" />
-          </a>
-        </div>
-        <div class="pub-text">
-          <p class="pub-title"><a href="https://arxiv.org/abs/2609.09357">Encrypt What Matters: When Selective Homomorphic Inference Is Efficient</a></p>
-          <p class="pub-authors"><strong>Ali Backour</strong>, Juan Reyes, Jaime Punyed, Ana Onoprishvili</p>
-          <p class="pub-venue">NeurIPS 2026 Workshop on Beyond Private Training: The New Landscape of AI Privacy &middot; Homomorphic encryption, privacy-preserving ML</p>
-          <p>
-            Studied selective homomorphic inference, where only a sensitive region of interest is
-            encrypted under FHE and computations independent of it run in plaintext. This produces
-            the same output as full FHE on the same model, without retraining, and its efficiency
-            depends on how quickly encrypted dependencies spread through the network. For small
-            encrypted regions, locality-preserving architectures achieve order-of-magnitude speedups,
-            while architectures with early global mixing gain essentially nothing.
-          </p>
-          <p class="pub-links">
-            <a href="https://arxiv.org/abs/2609.09357">arXiv</a>
-          </p>
-        </div>
-      </div>
+        <article class="pub-card">
+          <div class="pub-media">
+            <!-- plays while the card is hovered, click to pause or resume (script at the end of the page) -->
+            <video class="pub-anim" muted loop playsinline preload="auto" data-speed="2"
+                   poster="assets/img/guidance_variance_matching.jpg"
+                   aria-label="Animation: predictions of retrained denoisers scatter around the posterior mean, and guidance scales the spread back up until it matches the posterior covariance. It ends on a plot of predicted against published guidance scale for eleven image, video, audio, motion and world models, which fall along the diagonal">
+              <source src="assets/img/guidance_variance_matching.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <div class="pub-body">
+            <div class="pub-top">
+              <p class="pub-venue">Preprint, 2026</p>
+              <span class="play-hint" aria-hidden="true"></span>
+            </div>
+            <h3 class="pub-title"><a href="https://ottogin.github.io/vmg/">Guidance as Variance Matching</a></h3>
+            <p class="pub-authors"><strong>Ali Backour</strong>*, Artem Lukoianov*, Frank Permenter, Tommi Jaakkola, Justin Solomon, Vincent Sitzmann <span class="pub-note">(* equal contribution)</span></p>
+            <p class="pub-desc">
+              Guidance substantially improves the sample quality of diffusion models, but its
+              mechanism remains poorly understood. We find that, at the scales used in practice,
+              guidance <strong>makes the prediction of the posterior mean worse, while samples
+              improve</strong>. Posterior-mean predictions have less variance than the data, and
+              guidance restores it. We introduce <strong><em>variance-matched guidance</em></strong>:
+              a closed-form rule that picks the guidance scale by matching the variance of the guided
+              predictions to that of the data. Without tuning, it
+              <strong>recovers the hand-picked scales of eleven widely used models</strong> across
+              image, video, audio, motion, and world generation. Our interpretation also suggests
+              that <strong>guidance can work with negative scales</strong>, which our experiments
+              support.
+            </p>
+            <button class="pub-more" type="button" aria-expanded="false">Read more</button>
+            <div class="pub-foot">
+              <ul class="pub-tags">
+                <li>Diffusion models</li>
+                <li>Guidance</li>
+                <li>Generative modeling</li>
+              </ul>
+              <p class="pub-links">
+                <a class="btn" href="https://ottogin.github.io/vmg/">Project page</a>
+                <a class="btn" href="https://github.com/ottogin/guidance-as-variance-matching">Code</a>
+                <span class="pub-note">arXiv coming soon</span>
+              </p>
+            </div>
+          </div>
+        </article>
 
-      <div class="pub-row">
-        <div class="pub-thumb">
-          <a href="https://arxiv.org/abs/2509.20683">
-            <img src="assets/img/turbulence_equivariance.png" alt="Turbulent channel flow with mid-plane and boundary subdomains super-resolved from 16³ to 64³" />
+        <article class="pub-card">
+          <div class="pub-media">
+            <video class="pub-anim" muted loop playsinline preload="auto"
+                   poster="assets/img/mixture_collapse.jpg"
+                   aria-label="Animation: a 60/40 mix of two words passes through the 32 layers of Qwen3.5-4B. With random weights it drifts to 52/48, with pretrained weights to 87/13, and when the output is fed back as the next input it collapses to a single word">
+              <source src="assets/img/mixture_collapse.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <div class="pub-body">
+            <div class="pub-top">
+              <p class="pub-venue">NeurIPS 2026 Workshop on Interpretability as a Science</p>
+              <span class="play-hint" aria-hidden="true"></span>
+            </div>
+            <h3 class="pub-title"><a href="https://arxiv.org/abs/2609.02049">The Dynamics of Continuous Mixture Collapse in Language Models</a></h3>
+            <p class="pub-authors"><strong>Ali Backour</strong></p>
+            <p class="pub-desc">
+              Latent-state reasoning methods replace discrete intermediate tokens with continuous
+              states, such as mixtures of token embeddings, but pretrained language models often fail
+              to preserve these mixtures. I identify three distinct sources of failure. Transformer
+              architectures distort mixture geometry, and training amplifies this. Even with perfectly
+              linear transport, the softmax readout and autoregressive feedback form a dynamical system
+              that either amplifies small differences until one component dominates or contracts
+              mixtures until they become indistinguishable; the observed transition occurs near the
+              predicted threshold, and pretrained-model rollouts lie mostly on the amplifying side.
+              Finally, exact preservation of many-component mixtures generally requires a
+              context-dependent correction whose dimensionality can grow with the number of components.
+            </p>
+            <button class="pub-more" type="button" aria-expanded="false">Read more</button>
+            <div class="pub-foot">
+              <ul class="pub-tags">
+                <li>Language models</li>
+                <li>Latent reasoning</li>
+                <li>Dynamical systems</li>
+              </ul>
+              <p class="pub-links">
+                <a class="btn" href="https://arxiv.org/abs/2609.02049">arXiv</a>
+              </p>
+            </div>
+          </div>
+        </article>
+
+        <article class="pub-card">
+          <div class="pub-media">
+            <!-- photo: "Monkey Meditation" by Matthew Kane (Unsplash), CC0, via Wikimedia Commons -->
+            <video class="pub-anim" muted loop playsinline preload="auto"
+                   poster="assets/img/selective_fhe.jpg"
+                   aria-label="Schematic animation: only the face in a photo is encrypted; in a CNN the encrypted region spreads outward layer by layer, while in a ViT it covers the whole image after one layer">
+              <source src="assets/img/selective_fhe.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <div class="pub-body">
+            <div class="pub-top">
+              <p class="pub-venue">NeurIPS 2026 Workshop on Beyond Private Training: The New Landscape of AI Privacy</p>
+              <span class="play-hint" aria-hidden="true"></span>
+            </div>
+            <h3 class="pub-title"><a href="https://arxiv.org/abs/2609.09357">Encrypt What Matters: When Selective Homomorphic Inference Is Efficient</a></h3>
+            <p class="pub-authors"><strong>Ali Backour</strong>, Juan Reyes, Jaime Punyed, Ana Onoprishvili</p>
+            <p class="pub-desc">
+              Studied selective homomorphic inference, where only a sensitive region of interest is
+              encrypted under FHE and computations independent of it run in plaintext. This produces
+              the same output as full FHE on the same model, without retraining, and its efficiency
+              depends on how quickly encrypted dependencies spread through the network. For small
+              encrypted regions, locality-preserving architectures achieve order-of-magnitude speedups,
+              while architectures with early global mixing gain essentially nothing.
+            </p>
+            <button class="pub-more" type="button" aria-expanded="false">Read more</button>
+            <div class="pub-foot">
+              <ul class="pub-tags">
+                <li>Homomorphic encryption</li>
+                <li>Privacy-preserving ML</li>
+              </ul>
+              <p class="pub-links">
+                <a class="btn" href="https://arxiv.org/abs/2609.09357">arXiv</a>
+              </p>
+            </div>
+          </div>
+        </article>
+
+        <article class="pub-card">
+          <div class="pub-media">
+            <a href="https://arxiv.org/abs/2509.20683">
+              <img src="assets/img/turbulence_equivariance.png" alt="Turbulent channel flow with mid-plane and boundary subdomains super-resolved from 16³ to 64³" />
+            </a>
+          </div>
+          <div class="pub-body">
+            <p class="pub-venue">NeurIPS 2025 Workshop on Machine Learning and the Physical Sciences</p>
+            <h3 class="pub-title"><a href="https://arxiv.org/abs/2509.20683">Implicit Augmentation from Distributional Symmetry in Turbulence Super-Resolution</a></h3>
+            <p class="pub-authors">Julia Balla, Jeremiah Bailey, <strong>Ali Backour</strong>, Elyssa Hofgard, Tommi Jaakkola, Tess Smidt, Ryley McConkey</p>
+            <p class="pub-desc">
+              Studied whether convolutional neural networks can acquire rotational equivariance
+              implicitly from turbulence data, without explicit rotation augmentation or
+              specialized equivariant architectures. We found that statistical isotropy in
+              turbulent flows acts as a natural source of augmentation: models trained on more
+              isotropic mid-plane data exhibit lower equivariance error than those trained near
+              anisotropic boundary layers, and increasing temporal or spatial sampling further
+              improves equivariance.
+            </p>
+            <button class="pub-more" type="button" aria-expanded="false">Read more</button>
+            <div class="pub-foot">
+              <ul class="pub-tags">
+                <li>ML for physics</li>
+                <li>Turbulence</li>
+                <li>Equivariance</li>
+              </ul>
+              <p class="pub-links">
+                <a class="btn" href="https://arxiv.org/abs/2509.20683">arXiv</a>
+              </p>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <section id="teaching">
+      <h2>Teaching</h2>
+
+      <article class="feature-card">
+        <div class="pub-media">
+          <a href="https://mit-deep-learning-alchemy.github.io/">
+            <img src="assets/img/deep_learning_alchemy.png" alt="The Deep Learning Alchemy mascot pointing at a falling training-loss curve" />
           </a>
         </div>
-        <div class="pub-text">
-          <p class="pub-title"><a href="https://arxiv.org/abs/2509.20683">Implicit Augmentation from Distributional Symmetry in Turbulence Super-Resolution</a></p>
-          <p class="pub-authors">Julia Balla, Jeremiah Bailey, <strong>Ali Backour</strong>, Elyssa Hofgard, Tommi Jaakkola, Tess Smidt, Ryley McConkey</p>
-          <p class="pub-venue">NeurIPS 2025 Workshop on Machine Learning and the Physical Sciences &middot; ML for physics, turbulence, equivariance</p>
-          <p>
-            Studied whether convolutional neural networks can acquire rotational equivariance
-            implicitly from turbulence data, without explicit rotation augmentation or
-            specialized equivariant architectures. We found that statistical isotropy in
-            turbulent flows acts as a natural source of augmentation: models trained on more
-            isotropic mid-plane data exhibit lower equivariance error than those trained near
-            anisotropic boundary layers, and increasing temporal or spatial sampling further
-            improves equivariance.
+        <div class="pub-body">
+          <p class="pub-venue">MIT IAP 2027 &middot; January 4 to 29 &middot; Mondays and Wednesdays, 2:30&ndash;4:00 p.m. &middot; Room 4-270</p>
+          <h3 class="pub-title"><a href="https://mit-deep-learning-alchemy.github.io/">6.S094: Deep Learning Alchemy</a></h3>
+          <p class="pub-authors">Instructor, with <a href="https://danialht.github.io/">Danial Hosseintabar</a> &middot; Sponsored by <a href="https://web.mit.edu/phillipi/">Phillip Isola</a></p>
+          <p class="pub-desc">
+            Deep learning is full of surprising empirical phenomena that remain poorly understood.
+            This class goes through them alongside the theories that try to explain them: scaling
+            laws, training dynamics and optimization, architecture, and generalization, with an
+            emphasis on language models. Students run the experiments themselves on a transformer,
+            and are then tested the way research tests you: by predicting the outcome of an
+            experiment they have not run. As coding agents make implementation cheap, asking good
+            questions and designing informative experiments matter more than ever, and this class
+            is built to train exactly that.
           </p>
-          <p class="pub-links">
-            <a href="https://arxiv.org/abs/2509.20683">arXiv</a>
-          </p>
+          <div class="pub-foot">
+            <p class="pub-links">
+              <a class="btn btn-primary" href="https://forms.gle/GE8hsZxVdnZ6MqUc7">Register</a>
+              <a class="btn" href="https://mit-deep-learning-alchemy.github.io/">Course website</a>
+              <span class="pub-note">Offered for credit (P/D/F)</span>
+            </p>
+          </div>
+        </div>
+      </article>
+
+      <div class="mini-grid">
+        <div class="mini-card">
+          <p class="pub-venue">Spring 2027 &middot; Teaching Assistant</p>
+          <p class="mini-title"><a href="https://www.scenerepresentations.org/courses/2026/spring/advances-in-cv/">6.8300 Advances in Computer Vision</a></p>
+          <p class="mini-sub">MIT</p>
+        </div>
+        <div class="mini-card">
+          <p class="pub-venue">Fall 2026 &middot; Teaching Assistant</p>
+          <p class="mini-title"><a href="https://web.mit.edu/6.7920/www/">6.7920 Reinforcement Learning</a></p>
+          <p class="mini-sub">MIT</p>
         </div>
       </div>
     </section>
 
-    <section id="contact">
-      <h2>Contact</h2>
+    <footer class="site-footer" id="contact">
       <p>
         The best way to reach me is by email at
         <a href="mailto:abackour@mit.edu">abackour@mit.edu</a>.
       </p>
-    </section>
-
-    <footer>
-      Last updated: September 2026.
+      <p>Last updated: November 2026.</p>
     </footer>
   </main>
+
+  <script>
+    document.querySelectorAll('.pub-card').forEach(function (card) {
+      // "Read more" opens the full description; hidden when the text already fits.
+      var more = card.querySelector('.pub-more'), desc = card.querySelector('.pub-desc');
+      if (more && desc) {
+        more.addEventListener('click', function () {
+          var open = card.classList.toggle('is-open');
+          more.textContent = open ? 'Show less' : 'Read more';
+          more.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        var fit = function () { if (!card.classList.contains('is-open')) more.hidden = desc.scrollHeight <= desc.clientHeight + 1; };
+        window.addEventListener('load', fit);
+        window.addEventListener('resize', fit);
+      }
+
+      // A card's animation loops while the card is hovered or focused, and rewinds to its first
+      // frame otherwise (the clip opens on the same picture as the poster). A click on the
+      // animation freezes it on the current frame; a second click, or leaving the card and coming
+      // back, sets it going again. Touch screens have no hover, so there it plays while the
+      // animation is on screen and a tap freezes or resumes it.
+      var v = card.querySelector('video.pub-anim');
+      if (!v) return;
+      var frozen = false;
+      function start() {
+        if (frozen || !v.paused) return;
+        v.playbackRate = parseFloat(v.dataset.speed) || 1;   // data-speed on the <video> tag
+        var p = v.play();
+        if (p) p.catch(function () {});
+      }
+      function stop() {
+        frozen = false;
+        card.classList.remove('is-frozen');
+        v.pause();
+        if (v.readyState > 0) v.currentTime = 0;
+      }
+      v.addEventListener('click', function () {
+        if (v.paused) { frozen = false; start(); } else { frozen = true; v.pause(); }
+      });
+      v.addEventListener('play', function () { card.classList.add('is-playing'); card.classList.remove('is-frozen'); });
+      v.addEventListener('pause', function () { card.classList.remove('is-playing'); card.classList.toggle('is-frozen', frozen); });
+      if (window.matchMedia('(hover: hover)').matches) {
+        card.addEventListener('mouseenter', start);
+        card.addEventListener('mouseleave', stop);
+        card.addEventListener('focusin', start);
+        card.addEventListener('focusout', stop);
+      } else if ('IntersectionObserver' in window &&
+                 !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        new IntersectionObserver(function (entries) {
+          if (entries[0].isIntersecting) start(); else stop();
+        }, { threshold: 0.6 }).observe(v);
+      }
+    });
+  </script>
 </body>
 </html>

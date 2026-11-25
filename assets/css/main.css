@@ -1,15 +1,22 @@
 /* ==========================================================================
    main.css — homepage stylesheet
-   Style: classic academic homepage (Jon Barron-style): a single centered
-   column, photo on the right, publication rows with thumbnails.
+   A wide single page: intro with portrait, an announcement banner, and
+   publications as a two-column grid of cards with the figure on top.
    ========================================================================== */
 
 :root {
-  --text: #333333;
-  --muted: #666666;
-  --link: #1772d0;
-  --border: #dddddd;
-  --thumb-bg: #f4f4f4;
+  --bg: #fafaf8;
+  --card: #ffffff;
+  --ink: #17181a;
+  --text: #3b3e44;
+  --muted: #6b7078;
+  --line: #e6e7ea;
+  --accent: #2563eb;
+  --accent-dark: #1d4fc4;
+  --chip: #f2f3f5;
+  --radius: 16px;
+  --shadow: 0 1px 2px rgba(17, 24, 39, 0.05);
+  --shadow-lift: 0 18px 38px -16px rgba(17, 24, 39, 0.22), 0 2px 6px rgba(17, 24, 39, 0.05);
 }
 
 * {
@@ -22,73 +29,159 @@ html {
 
 body {
   margin: 0;
-  background: #ffffff;
+  background: var(--bg);
   color: var(--text);
-  font-family: "Lato", Verdana, Helvetica, Arial, sans-serif;
-  font-size: 15px;
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 16px;
   line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 .container {
-  max-width: 860px;
+  max-width: 1120px;
   margin: 0 auto;
-  padding: 56px 24px 72px;
+  padding: 72px 28px 48px;
 }
 
 a {
-  color: var(--link);
+  color: var(--accent);
   text-decoration: none;
 }
 
 a:hover {
   text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+strong {
+  color: var(--ink);
+  font-weight: 600;
 }
 
 /* --------------------------------------------------------------------------
-   Header: name + bio on the left, portrait on the right
+   Buttons, used for every outbound link row
+   -------------------------------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.2;
+  white-space: nowrap;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+
+.btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.btn-primary {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #ffffff;
+}
+
+.btn-primary:hover {
+  border-color: var(--accent-dark);
+  background: var(--accent-dark);
+  color: #ffffff;
+}
+
+/* --------------------------------------------------------------------------
+   Header: name and bio on the left, portrait on the right
    -------------------------------------------------------------------------- */
 
 .site-header {
   display: flex;
-  gap: 40px;
-  align-items: flex-start;
-  margin-bottom: 24px;
+  gap: 56px;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .site-header .intro {
-  flex: 1;
+  max-width: 700px;
+}
+
+.site-header .intro p {
+  margin: 0 0 14px;
 }
 
 h1.name {
-  font-size: 34px;
-  font-weight: 400;
-  margin: 0 0 4px;
-  line-height: 1.2;
+  margin: 0 0 8px;
+  color: var(--ink);
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
 }
 
-.tagline {
+.site-header .intro p.tagline {
+  margin: 0 0 22px;
   color: var(--muted);
-  margin: 0 0 14px;
-  font-size: 16px;
+  font-size: 18px;
 }
 
 .profile-photo {
-  width: 180px;
-  height: 180px;
+  width: 230px;
+  height: 230px;
+  flex-shrink: 0;
   border-radius: 50%;
   object-fit: cover;
-  flex-shrink: 0;
-  background: var(--thumb-bg);
+  background: var(--chip);
+  box-shadow: 0 0 0 6px var(--card), 0 0 0 7px var(--line), 0 22px 40px -18px rgba(17, 24, 39, 0.35);
 }
 
 .header-links {
-  margin-top: 12px;
-  font-size: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 22px;
 }
 
-.header-links a + a::before {
-  content: "\00a0/\00a0\00a0";
-  color: var(--muted);
+/* --------------------------------------------------------------------------
+   Announcement banner under the header
+   -------------------------------------------------------------------------- */
+
+.announce {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: 44px;
+  padding: 16px 20px;
+  border: 1px solid #dbe5fb;
+  border-radius: var(--radius);
+  background: linear-gradient(95deg, #eef4ff 0%, #f4f1ff 100%);
+}
+
+.announce p {
+  flex: 1;
+  margin: 0;
+  color: var(--ink);
+  font-size: 15.5px;
+  line-height: 1.55;
+}
+
+.badge {
+  flex-shrink: 0;
+  padding: 5px 11px;
+  border: 1px solid #cfdcfa;
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  line-height: 1.3;
+  text-transform: uppercase;
 }
 
 /* --------------------------------------------------------------------------
@@ -96,157 +189,464 @@ h1.name {
    -------------------------------------------------------------------------- */
 
 section {
-  margin-bottom: 8px;
+  margin-top: 68px;
 }
 
 h2 {
-  font-size: 22px;
+  margin: 0 0 22px;
+  color: var(--ink);
+  font-size: 26px;
   font-weight: 700;
-  margin: 36px 0 14px;
-  padding-bottom: 6px;
-  border-bottom: 1px solid var(--border);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
 }
 
-.interests {
-  padding-left: 22px;
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
   margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-.interests li {
-  margin-bottom: 2px;
+.chips li {
+  padding: 7px 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--ink);
+  font-size: 14.5px;
+  line-height: 1.35;
 }
 
 /* --------------------------------------------------------------------------
-   Publication / project rows: thumbnail on the left, text on the right
+   Publication cards: figure on top, text below, two per row
    -------------------------------------------------------------------------- */
 
-.pub-row {
+.pub-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px;
+}
+
+.pub-card,
+.feature-card,
+.mini-card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--card);
+  box-shadow: var(--shadow);
+}
+
+.pub-card {
   display: flex;
-  gap: 26px;
-  align-items: flex-start;
-  padding: 16px 0;
+  flex-direction: column;
+  overflow: hidden;
+  transition: box-shadow 0.25s, transform 0.25s, border-color 0.25s;
 }
 
-.pub-row + .pub-row {
-  border-top: 1px solid #eeeeee;
+.pub-card:hover {
+  border-color: #d6d9df;
+  box-shadow: var(--shadow-lift);
+  transform: translateY(-3px);
 }
 
-.pub-thumb {
-  width: 170px;
-  flex-shrink: 0;
+/* every figure and animation is 680 x 472 */
+.pub-media {
+  position: relative;
+  aspect-ratio: 680 / 472;
+  border-bottom: 1px solid var(--line);
+  background: #ffffff;
 }
 
-.pub-thumb img {
+.pub-media img,
+.pub-media video {
+  display: block;
   width: 100%;
-  height: 118px;
+  height: 100%;
   object-fit: cover;
-  border-radius: 6px;
-  background: var(--thumb-bg);
-  border: 1px solid var(--border);
 }
 
-.pub-thumb .placeholder {
-  width: 100%;
-  height: 118px;
-  border-radius: 6px;
-  border: 1px solid var(--border);
-  background: linear-gradient(135deg, #f7f9fc 0%, #e8eef5 100%);
+/* animations pause and resume on click */
+.pub-media video.pub-anim {
+  cursor: pointer;
+}
+
+/* status line beside the venue: how to play, pause and resume the animation */
+.pub-top {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #9aa8b8;
-  font-size: 13px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 8px;
 }
 
-.pub-text {
+.pub-body .pub-top .pub-venue {
+  margin-bottom: 0;
+}
+
+.play-hint {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+.play-hint::before {
+  content: "";
+  border-style: solid;
+  border-width: 4px 0 4px 6.5px;
+  border-color: transparent transparent transparent currentColor;
+}
+
+.play-hint::after {
+  content: "Hover to play";
+}
+
+.pub-card.is-playing .play-hint::before,
+.pub-card.is-frozen .play-hint::before {
+  width: 2px;
+  height: 8px;
+  border-width: 0 2px;
+  border-color: currentColor;
+}
+
+.pub-card.is-playing .play-hint::after {
+  content: "Click to pause";
+}
+
+.pub-card.is-frozen .play-hint {
+  color: var(--accent);
+}
+
+.pub-card.is-frozen .play-hint::before {
+  width: 0;
+  height: 0;
+  border-width: 4px 0 4px 6.5px;
+  border-color: transparent transparent transparent currentColor;
+}
+
+.pub-card.is-frozen .play-hint::after {
+  content: "Paused, click to resume";
+}
+
+/* touch screens: the animation plays by itself when it is on screen */
+@media (hover: none) {
+  .play-hint {
+    visibility: hidden;
+  }
+
+  .pub-card.is-playing .play-hint,
+  .pub-card.is-frozen .play-hint {
+    visibility: visible;
+  }
+
+  .pub-card.is-playing .play-hint::after {
+    content: "Tap to pause";
+  }
+
+  .pub-card.is-frozen .play-hint::after {
+    content: "Paused, tap to resume";
+  }
+}
+
+.pub-body {
+  display: flex;
   flex: 1;
+  flex-direction: column;
   min-width: 0;
+  padding: 22px 24px 22px;
+}
+
+.pub-body p {
+  margin: 0;
+}
+
+.pub-body .pub-venue,
+.mini-card .pub-venue {
+  margin-bottom: 8px;
+  color: var(--accent);
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1.45;
 }
 
 .pub-title {
-  font-size: 16px;
+  margin: 0 0 8px;
+  color: var(--ink);
+  font-size: 19px;
   font-weight: 700;
-  margin: 0 0 2px;
+  letter-spacing: -0.012em;
+  line-height: 1.32;
 }
 
 .pub-title a {
-  color: var(--link);
+  color: inherit;
 }
 
-.pub-authors {
-  font-size: 14px;
+.pub-title a:hover {
+  color: var(--accent);
+  text-decoration: none;
 }
 
-.pub-venue {
-  font-style: italic;
+/* co-authors in full-strength text, my own name in bold */
+.pub-body .pub-authors {
+  margin-bottom: 12px;
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.pub-authors strong {
+  font-weight: 700;
+}
+
+.pub-desc {
+  font-size: 14.5px;
+  line-height: 1.62;
+}
+
+/* long descriptions open on demand, so the cards in a row stay the same height */
+.js .pub-card .pub-desc {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+}
+
+.js .pub-card.is-open .pub-desc {
+  display: block;
+  overflow: visible;
+}
+
+.pub-more {
+  display: none;
+  align-self: flex-start;
+  margin: 8px 0 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--accent);
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.js .pub-more {
+  display: inline-block;
+}
+
+.pub-more[hidden] {
+  display: none;
+}
+
+.pub-more:hover {
+  color: var(--accent-dark);
+}
+
+.pub-foot {
+  margin-top: auto;
+  padding-top: 18px;
+}
+
+.pub-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 14px;
+  padding: 0;
+  list-style: none;
+}
+
+.pub-tags li {
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--chip);
   color: var(--muted);
-  font-size: 14px;
-  margin: 0 0 6px;
-}
-
-.pub-text p {
-  margin: 0 0 6px;
+  font-size: 12px;
+  line-height: 1.5;
 }
 
 .pub-links {
-  font-size: 14px;
-}
-
-.pub-links a + a::before {
-  content: "\00a0/\00a0\00a0";
-  color: var(--muted);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
 }
 
 .pub-note {
   color: var(--muted);
+  font-size: 13.5px;
+}
+
+.pub-authors .pub-note {
+  font-size: inherit;
+}
+
+.pub-links .pub-note {
+  margin-left: 4px;
+}
+
+/* --------------------------------------------------------------------------
+   Teaching: one wide card for the class, two small ones for the TA roles
+   -------------------------------------------------------------------------- */
+
+.feature-card {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  overflow: hidden;
+}
+
+.feature-card .pub-media {
+  aspect-ratio: auto;
+  min-height: 100%;
+  border-right: 1px solid var(--line);
+  border-bottom: 0;
+}
+
+.feature-card .pub-media a {
+  display: block;
+  height: 100%;
+}
+
+.feature-card .pub-media img {
+  object-fit: contain;
+  padding: 18px;
+}
+
+.feature-card .pub-body {
+  padding: 28px 30px;
+}
+
+.feature-card .pub-title {
+  font-size: 22px;
+}
+
+.feature-card .pub-desc {
+  font-size: 15px;
+}
+
+.mini-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px;
+  margin-top: 28px;
+}
+
+.mini-card {
+  padding: 18px 24px;
+}
+
+.mini-card p {
+  margin: 0;
+}
+
+.mini-title {
+  color: var(--ink);
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+}
+
+.mini-title a {
+  color: inherit;
+}
+
+.mini-title a:hover {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.mini-sub {
+  color: var(--muted);
+  font-size: 14px;
 }
 
 /* --------------------------------------------------------------------------
    Footer
    -------------------------------------------------------------------------- */
 
-footer {
-  margin-top: 48px;
-  padding-top: 18px;
-  border-top: 1px solid var(--border);
+.site-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 24px;
+  margin-top: 76px;
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
   color: var(--muted);
-  font-size: 13px;
+  font-size: 14px;
+}
+
+.site-footer p {
+  margin: 0;
 }
 
 /* --------------------------------------------------------------------------
-   Mobile
+   Narrow screens: one column, portrait above the name
    -------------------------------------------------------------------------- */
 
-@media (max-width: 680px) {
+@media (max-width: 900px) {
+  .container {
+    padding: 44px 20px 40px;
+  }
+
   .site-header {
     flex-direction: column-reverse;
-    gap: 20px;
+    align-items: flex-start;
+    gap: 26px;
   }
 
   .profile-photo {
-    width: 140px;
-    height: 140px;
+    width: 150px;
+    height: 150px;
   }
 
   h1.name {
-    font-size: 28px;
+    font-size: 38px;
   }
 
-  .pub-row {
+  .announce {
     flex-direction: column;
+    align-items: flex-start;
     gap: 12px;
   }
 
-  .pub-thumb {
-    width: 100%;
-    max-width: 280px;
+  section {
+    margin-top: 52px;
   }
 
-  /* keep the desktop 170:118 shape so figures aren't cropped when widened */
-  .pub-thumb img {
-    height: auto;
-    aspect-ratio: 170 / 118;
+  .pub-grid,
+  .mini-grid,
+  .feature-card {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .pub-grid,
+  .mini-grid {
+    gap: 20px;
+  }
+
+  .mini-grid {
+    margin-top: 20px;
+  }
+
+  .feature-card .pub-media {
+    aspect-ratio: 680 / 472;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .feature-card .pub-body {
+    padding: 22px 24px;
   }
 }
