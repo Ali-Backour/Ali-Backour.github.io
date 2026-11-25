@@ -25,7 +25,21 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400;1,700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/main.css" />
 </head>
-<body>
+<body id="top">
+  <!-- Tabs: the first three scroll this page, the last opens the creative writing page.
+       data-spy names the section a tab follows as the reader scrolls (script at the end). -->
+  <nav class="site-nav" aria-label="Site">
+    <div class="nav-inner">
+      <a class="nav-name" href="#top">Ali Backour</a>
+      <ul class="nav-tabs">
+        <li><a href="#top" data-spy="top" class="is-active">Main</a></li>
+        <li><a href="#research-interests" data-spy="research-interests">Research</a></li>
+        <li><a href="#teaching" data-spy="teaching">Teaching</a></li>
+        <li><a href="writing/index.html">Creative Writing</a></li>
+      </ul>
+    </div>
+  </nav>
+
   <main class="container">
 
     <header class="site-header">
@@ -71,9 +85,8 @@
       <ul class="chips">
         <li>Diffusion models</li>
         <li>Geometry of data manifolds and representation spaces</li>
-        <li>Information theory for machine learning</li>
-        <li>Understanding and evaluating large language models</li>
-        <li>Cryptography, privacy, and ML security</li>
+        <li>Pretraining dynamics</li>
+        <li>Reinforcement learning</li>
       </ul>
     </section>
 
@@ -336,6 +349,28 @@
   </main>
 
   <script>
+    // Tab bar: light up the tab of the section being read, and show the name in the bar once
+    // the big one at the top has scrolled away.
+    (function () {
+      var nav = document.querySelector('.site-nav'), name = document.querySelector('h1.name');
+      var tabs = Array.prototype.slice.call(nav.querySelectorAll('.nav-tabs a[data-spy]'));
+      function update() {
+        var line = nav.offsetHeight + 60, current = tabs[0];
+        tabs.forEach(function (tab) {
+          var target = document.getElementById(tab.dataset.spy);
+          if (target && target.getBoundingClientRect().top <= line) current = tab;
+        });
+        // at the very bottom the last section may be too short to reach the line
+        if (window.scrollY > 0 && window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2) current = tabs[tabs.length - 1];
+        tabs.forEach(function (tab) { tab.classList.toggle('is-active', tab === current); });
+        nav.classList.toggle('show-name', name.getBoundingClientRect().bottom < nav.offsetHeight);
+      }
+      window.addEventListener('scroll', update, { passive: true });
+      window.addEventListener('resize', update);
+      window.addEventListener('load', update);
+      update();
+    })();
+
     document.querySelectorAll('.pub-card').forEach(function (card) {
       // "Read more" opens the full description; hidden when the text already fits.
       var more = card.querySelector('.pub-more'), desc = card.querySelector('.pub-desc');
